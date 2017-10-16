@@ -1,0 +1,10 @@
+FROM python:latest
+
+MAINTAINER gaobiyu1702 gaobiyu1702@1gene.com.cn
+
+RUN mkdir /base
+COPY requirements.txt /base/requirements.txt
+RUN pip install -r /base/requirements.txt -i https://mirrors.ustc.edu.cn/pypi/web/simple/
+
+COPY tms-requirements.txt /base/tms-requirements.txt
+RUN pip install -r /base/tms-requirements.txt -i https://mirrors.ustc.edu.cn/pypi/web/simple/

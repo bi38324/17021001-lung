@@ -1,0 +1,5 @@
+FROM lixing1611/bdms_api_base
+
+
+COPY deploy/bdms_tms-1.1.8-py3-none-any.whl /base/bdms_tms-1.1.8-py3-none-any.whl
+RUN pip install /base/bdms_tms-1.1.8-py3-none-any.whl -i https://mirrors.ustc.edu.cn/pypi/web/simple/

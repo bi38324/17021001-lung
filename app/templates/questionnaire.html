@@ -1,0 +1,128 @@
+{% block diligent_script %}
+	<meta name="viewport" content="width=375,maximum-scale=4,user-scalable=no">
+	<meta name="format-detection" content="telephone=no" /> 
+	<meta name="apple-mobile-web-app-capable" content="yes" />
+	<meta name="apple-mobile-web-app-status-bar-style" content="black">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/questionnaire.css') }}">
+{% endblock %}
+
+{% block body %}
+	<div class="content">
+		<div class="title-wrapper">
+			<h1>调 查 问 卷</h1>
+			<h5>请 小 主 填 写 下 面 的 调 查 问 卷 </h5>
+		</div>
+		<div class="select-wrapper">
+			<div class="inner-wrapper " date-title="2" date-last="0">
+				<h3>摄入蔬菜水果频次</h3>	
+				<ul class="list-wrapper">
+					<li><span class="radio_span"><input type="radio"/></span><p>从不</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>偶尔</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>每周1~2天</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>每周3~4天</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>每周5~7天</p></li>
+				</ul>
+			</div>
+
+			<div class="inner-wrapper hide" date-title="2" date-last="0">
+				<h3>摄入腌制蔬菜或烟熏肉类频次</h3>	
+				<ul class="list-wrapper">
+					<li><span class="radio_span"><input type="radio"/></span><p>从不</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>偶尔</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>每周1~2天</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>每周3~4天</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>每周5~7天</p></li>
+				</ul>
+			</div>
+
+			<div class="inner-wrapper hide" date-title="2" date-last="0">
+				<h3>吸烟频率</h3>	
+				<ul class="list-wrapper">
+					<li><span class="radio_span"><input type="radio"/></span><p>从不</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>偶尔</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>经常</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>已戒烟</p></li>
+				</ul>
+			</div>
+
+			<div class="inner-wrapper hide" date-title="2" date-last="0">
+				<h3>吸烟年限</h3>	
+				<ul class="list-wrapper">
+					<li><span class="radio_span"><input type="radio"/></span><p>0~3年</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>3~10年</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>10~30年</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>30年以上</p></li>
+				</ul>
+			</div>
+
+			<div class="inner-wrapper hide" date-title="2" date-last="0">
+				<h3>是否被动吸烟(二手烟)</h3>	
+				<ul class="list-wrapper">
+					<li><span class="radio_span"><input type="radio"/></span><p>是</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>否</p></li>
+				</ul>
+			</div>
+
+			<div class="inner-wrapper hide" date-title="2" date-last="0">
+				<h3>运动情况</h3>	
+				<ul class="list-wrapper">
+					<li><span class="radio_span"><input type="radio"/></span><p>偶尔</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>一周1~3次</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>一周4~5次</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>几乎每天</p></li>
+				</ul>
+			</div>
+
+		
+			<div class="inner-wrapper hide" date-title="2" date-last="0">
+				<h3>肺癌家族史</h3>	
+				<ul class="list-wrapper">
+					<li><span class="radio_span"><input type="radio"/></span><p>无</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>直系亲属中有1人</p></li>
+                  	<li><span class="radio_span"><input type="radio"/></span><p>直系亲属中有2人或以上</p></li>
+				</ul>
+			</div>
+
+			<div class="inner-wrapper hide more-sel-lung" date-title="2" date-last="0">
+				<h3>肺部疾病史</h3>	
+				<ul class="list-wrapper">
+					<li><span class="check_span"><input type="checkbox"/></span><p>慢阻肺</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>肺结核</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>慢性支气管炎</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>肺炎</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>痰中带血或咯血</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>哮喘</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>其他呼吸系统疾病</p></li>
+                  	<li><span class="check_span last_lung_item"><input type="checkbox" name="sex"/></span><p>无以上疾病</p></li>
+				</ul>
+			</div>
+
+			<div class="inner-wrapper hide last more-sel-work" date-title="2" date-last="1">
+				<h3>职业接触史</h3>	
+				<ul class="list-wrapper">
+					<li><span class="check_span"><input type="checkbox"/></span><p>石棉</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>硅粉尘</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>煤烟或焦油或石油化工类</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>印刷</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>干洗</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>皮革，橡胶等苯类物质</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>放射性物质</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>铅汞等重金属</p></li>
+                  	<li><span class="check_span"><input type="checkbox"/></span><p>染料或油漆</p></li>
+                  	<li><span class="check_span last_work_item"><input type="checkbox"/></span><p>无以上接触</p></li>
+				</ul>
+			</div>
+		</div>
+		<div class="button-wrapper">
+			<a href="javascript:void(0);" class="button"> 提交选择 </a>
+		</div>
+	</div>
+{% endblock %}
+
+{% block lazy_script%}
+	<script src="{{ url_for('static', filename='js/jquery-1.10.2.min.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/checkbox.js') }}"></script>
+	<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+{% endblock %}
+

@@ -1,0 +1,155 @@
+/* 颜色 */
+.fc1{
+   color: #3fe3e8;
+}
+
+.fc2{
+    color:#ffffff;
+}
+body{ margin:0;
+    padding:0;
+    font-size:12px;
+    color:#081924;
+   }
+.progress-box{ 
+    width: 375px;
+    height: auto;
+    margin: 0 auto;
+    background-color: #081924;
+       }
+.scale_panel{
+    color: #ffffff;
+    width: 247px;
+    position: absolute;
+    line-height: 18px;
+    left: 84px;
+    top: 0px;
+           }
+
+.circle_move{
+  background: url(../img/circle.png) no-repeat;
+  width: 24px;
+  height: 24px;
+  position: absolute;
+  left: -2px;
+  top: -7px;
+  cursor: pointer;
+  }
+
+  #grade{
+    position: absolute;
+    right: 20px;
+    top: -3px;
+    font-size: 20px;
+  }
+.scale{ 
+    background-repeat: repeat-x;
+    background-position: 0 100%;
+    background-color: #E4E4E4;
+    width: 100%;
+    height: 10px;
+    margin: 18px 47px 18px 0;
+    position: relative;
+    border-radius: 3px;
+  }
+#bg{  background-repeat: repeat-x;
+      background-color: #3fe2ea; 
+      width: 0px; position: absolute; 
+      height: 10px; 
+      width: 0; 
+      left: 0; 
+      bottom: 0;
+      }
+ .box-head-title{
+        width:100%;
+        height:80px;
+        background: url(../img/icon-12.png) no-repeat center;
+        background-size:40% 50%;
+}
+.title{
+    position: absolute;
+    left: 15px;
+    font-size: 12px;
+    top: -2px;
+}
+
+.progress-content{
+    font-size: 12px;
+    line-height: 50px;
+    position: relative;
+    height: 50px;
+    list-style: none;
+}
+
+/* 解决移动端长按拷贝 */
+*{   
+    -webkit-touch-callout:none;  /*系统默认菜单被禁用*/   
+    -webkit-user-select:none; /*webkit浏览器*/   
+    -khtml-user-select:none; /*早期浏览器*/   
+    -moz-user-select:none;/*火狐*/   
+    -ms-user-select:none; /*IE10*/   
+    user-select:none;   
+} 
+ 
+/* 给input开权限 */
+
+input {      
+     -webkit-user-select:auto; /*webkit浏览器*/     
+}  
+
+.title-sub{
+    font-size:12px;
+    width:100%;
+    text-align: center;
+    color:rgb(46, 162, 171);
+}
+
+.title-sub1{
+    font-size:12px;
+    width:100%;
+    text-align: center;
+    color:#b3acac;
+    vertical-align: middle;
+}
+
+.title-sub-content{
+    text-align: center;
+    margin: 20px auto;
+}
+
+.onload{
+    /* margin: 20px 0 auto;
+    text-align: center; */
+}
+
+.title-sub2{
+    margin: 20px  auto;
+    text-align: center;
+    color:#f2eaea;
+}
+
+.form-wrapper{
+    text-align: center;
+    font-size:24px;
+    color:#fff;
+}
+
+.input-size{
+    width:280px;
+    height: 30px;
+    line-height: 30px;
+    margin: 10px auto;
+}
+
+.input-size1{
+    width:180px;
+    height: 30px;
+    line-height: 30px;
+}
+
+.input-size2{
+    width:100px;
+    height: 30px;
+    line-height: 30px;
+}
+

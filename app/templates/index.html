@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta http-equiv="Content-Type" content="text/html;charset=UTF-8">
+<meta name="viewport" content="width=375,maximum-scale=4,user-scalable=no">
+<!-- <meta content="width=device-width, initial-scale=1.0, minimum-scale=1.0, maximum-scale=1.0,user-scalable=no" name="viewport" id="viewport" /> -->
+<meta name="format-detection" content="telephone=no" /> 
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black">
+<title>肺 癌 患 病 指 数 智 能 评 估 系 统</title>
+<!-- <link rel="stylesheet" type="text/css" href="css/style.css" />
+<link rel="stylesheet" type="text/css" href="css/reset.css" />
+<link rel="stylesheet" type="text/css" href="css/index.css" /> -->
+<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='css/reset.css') }}" rel="stylesheet" type="text/css">
+<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" type="text/css">
+<!-- <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
+<script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script> -->
+<script src="{{ url_for('static', filename='js/jquery-1.10.2.min.js') }}" language="javascript"></script>
+<script src="{{ url_for('static', filename='js/jquery.touchSwipe.min.js') }}" language="javascript"></script>
+</head>
+	<body onmousewheel="return false;">
+		<div class="container">
+			<div class="page page0 cur" id="div">
+				<div class="title-wrapper">
+                    <img src="{{ url_for('static', filename='img/title.png') }}" class="img-responsive"/>
+					<span>肺 癌 患 病 指 数 智 能 评 估 系 统</span>
+				</div>
+				<div class="title-wrapper2">
+					<p>基 因 检 测 大 数 据</p>
+					<p>人 工 智 能</p>
+				</div>
+				<div class="desc">
+					<p>十 万 例 中 国 人 的 基 因 数 据</p>
+				</div>
+				<div class="lung">
+				</div>
+				<div class="result">
+					<p>肺 癌 预 测 准 确 率 : 86%</p>
+				</div>
+				<div class="logo">
+				</div>
+				<div class="ball-wrapper">
+				</div>
+				<span class="start"><b></b></span>
+			</div>
+
+
+			<div class="page page1" >
+			    <div class="title">
+			    	<p>已 参 与 测 试 人 数</p>
+			    </div>
+			    <div class="number-wrapper">
+                    <img src="{{ url_for('static', filename='img/number.png') }}" class="img-responsive"/>
+			    	<div class="value"></div>
+			    </div>
+			    <div class="test-wrapper">
+			    	<p>肺 癌 健 康 测 评</p>
+			    </div>
+			    <div class="slogan">
+			    	<p>科 学 抗 癌 , 关 爱 生 命</p>
+			    	<p>从 了 解 自 己 开 始</p>
+			    </div>
+			    <div class="button-wrapper">
+					 开始测试
+				</div>
+				<div class="ball-wrapper">
+				</div>
+			</div>
+		</div>
+	</body>
+	<script src="{{ url_for('static', filename='js/count.js') }}" language="javascript"></script>
+	<script src="{{ url_for('static', filename='js/myscript.js') }}" language="javascript"></script>
+</html>
