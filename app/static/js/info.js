@@ -283,8 +283,7 @@ $('.sign-in').click(function(e){
                         'appId': 'AP339457443459235841'
                 },
                 success: function (data) {
-                    Data = data;
-                    console.log(Data);
+                    var Data = data;
                     if(Data.accessToken){
                         $.ajax({
                             type: 'POST',
@@ -297,8 +296,12 @@ $('.sign-in').click(function(e){
                             },
                             success: function(result){
                                 $('.cartoon').show();
-                                console.log(result);
-                                //window.location.href="/canvas/";
+                                //存数据去下一页
+                                     var str = JSON.stringify(result);
+                                    //存入
+                                    sessionStorage.obj = str;
+                                    sessionStorage.token = Data.accessToken;
+                                    window.location.href = '/canvas/';
                             }
                         });
                     }
