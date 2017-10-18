@@ -25,7 +25,7 @@
 			width: 100%;
 		}
 	}
-	
+
 	@media all and (orientation: portrait) {
 		body {
 			width: 100%;
@@ -39,10 +39,10 @@
  	canvas{width:100%;display: block;margin: 0;position: absolute;background:transparent;left: 0;top: 0;}
  	#canvas_1{z-index: 2;}
  	#canvas_2{z-index: 3; background: transparent;transform:rotate(-90deg); }
- 	.hide{width:100px;color:#3FE2EA;position:relative; z-index:2; top:90px;left:28px;text-align: center;letter-spacing: 3px;}  
- 	@font-face {  
-	    /* font-properties */  
-	    font-family: Ruler;  
+ 	.hide{width:100px;color:#3FE2EA;position:relative; z-index:2; top:90px;left:28px;text-align: center;letter-spacing: 3px;}
+ 	@font-face {
+	    /* font-properties */
+	    font-family: Ruler;
         src:/*url('font/DS-DIGI.woff'),    */
 		    url('../font/DS-DIGI.TTF'),
 		    url('../font/DS-DIGI.TTF.eot'); /* IE9 */
@@ -88,7 +88,7 @@
 		margin: 21px 10px 0 112px;
 		border-radius: 50%;
 		background: #3FE2E9;
-		
+
 	}
 	#ranking>div:last-child{
 		min-width:200px ;
@@ -98,7 +98,7 @@
 		text-align: left;
 		color: #fff;
 		letter-spacing: 2px;
-		
+
 	}
 	/*文字结果*/
 	.textbg{width:300px;height:150px; background: url(../img/icon-13.png) no-repeat ; background-size: 100% 100%; position: absolute;top: 310px;left: 35px;}
@@ -116,14 +116,14 @@
 	.spenbox{
 		width: 100%;
 		margin-top:90px ;
-		
+
 	}
 	.manybox{
 		border: 1px solid #3FE2E9;
 		margin: 0 15px 20px ;
-		padding:10px 20px; 
+		padding:10px 20px;
 		background:rgba(63,226,235,0.2);
-		
+
 	}
 	.one_list{padding:5px;text-align: left;}
 	.one_list>img{width:16px;display: inline-block; vertical-align: middle;padding-right:5px ; margin-top: -4px; }
@@ -133,35 +133,35 @@
 	.one_ment_list{/*text-indent:26px;*/ padding-top: 5px;}
 	.one_ment_downlist{height:20px;  overflow:hidden;font-size: 13px; margin-left: 42px; letter-spacing: 2px; margin-bottom:10px ;margin-top: 5px;transition:height 0.5s ease; }
 	.new_downlist{height:100%;}
-	
+
 	/*.square{width:16px;height: 16px; display: inline-block;  border-right: 24px solid #3FE2E9; border-bottom: 24px solid #3FE2E9;  position: absolute;top:0; right:15px; transform:rotate(45deg);}*/
-	.square{ 
-		display: inline-block;  
-        border-right: 2px solid; 
-        border-bottom: 2px solid;  
-        width: 8px; height: 8px;  
-        transform: rotate(-45deg); 
-        transition: 1s ease; 
+	.square{
+		display: inline-block;
+        border-right: 2px solid;
+        border-bottom: 2px solid;
+        width: 8px; height: 8px;
+        transform: rotate(-45deg);
+        transition: 1s ease;
         position: absolute;
-        top:2px; 
+        top:2px;
         right: 20px;
-        
+
         }
-     .square_rotate{display: inline-block;  
-        border-right: 2px solid; 
-        border-bottom: 2px solid;  
-        width: 8px; height: 8px;  
-        transform: rotate(45deg); 
-        transition: 0.5s ease; 
+     .square_rotate{display: inline-block;
+        border-right: 2px solid;
+        border-bottom: 2px solid;
+        width: 8px; height: 8px;
+        transform: rotate(45deg);
+        transition: 0.5s ease;
         position: absolute;
-        top:2px; 
+        top:2px;
         right: 20px;}
 	.list_headover{overflow: hidden; position: relative;}
 	/*-----  恶性肿瘤图片/内容  -----------------*/
 	#cancer{width:100%; color: #fff;}
 	#cancer>p{text-align: center;}
 	   /*肿瘤包裹的盒子*/
-	.cancerpicbox{height: 17px; margin: 10px 30px;} 
+	.cancerpicbox{height: 17px; margin: 10px 30px;}
 	.cancerImg{width: 100%;height: 100%;}
-	/*下拉的高度 因上倒下css的读取 所以放置在会后面*/ 
+	/*下拉的高度 因上倒下css的读取 所以放置在会后面*/
 	.new_downlist{height:100%;}

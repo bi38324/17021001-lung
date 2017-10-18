@@ -31,7 +31,7 @@ $(function(){
     let value;
     let arr1 = [];
     let arr2 = [];
-    $(".button-wrapper").click(function(e){
+    $(".button").click(function(e){
     	e.preventDefault();
     	if($(".list-wrapper li span").hasClass("radio_span--checked")|| $(".list-wrapper li span").hasClass("check_span--checked")){
     		$(".select-wrapper").children('.inner-wrapper').each(function(index,element){
@@ -54,7 +54,6 @@ $(function(){
     				$(this).hide().next().show();
     			}
 
-
     			// 判断最后一题（多选）
 				if($(this).attr("date-title")==0&&$(this).attr("date-last")==1){
 					$(this).children('.list-wrapper').children().children('.check_span--checked').each(function(){
@@ -64,7 +63,7 @@ $(function(){
     					selectObj[key2] = arr2;
     					let obj = JSON.stringify(selectObj);
     					sessionStorage.setItem('key',obj);
-    					window.location.href="/info/";
+    					window.location.href="info.html";
     				});
 				}		
         	});

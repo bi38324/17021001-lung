@@ -4,11 +4,11 @@
 	<meta name="format-detection" content="telphone=no, email=no" />
 	<meta http-equiv="Access-Control-Allow-Origin" content="*">
 	<meta name="viewport" content="width=375,maximum-scale=4,initial-scale=1.0,user-scalable=no">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/progress.css') }}">
-    <link rel="stylesheet" href="{{ url_for('static', filename='css/canvas.css') }}">
-    <script src="{{ url_for('static', filename='js/jquery-1.8.3.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/vue.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/layer-master/src/layer.js') }}"></script>
+    <link rel="stylesheet" href="${url_for('static', filename='css/progress.css')}">
+    <link rel="stylesheet" href="${url_for('static', filename='css/canvas.css')}">
+    <script src="${url_for('static', filename='js/jquery-1.8.3.min.js')}"></script>
+    <script src="${url_for('static', filename='js/vue.js')}"></script>
+    <script src="${url_for('static', filename='js/layer-master/src/layer.js')}"></script>
 {% endblock %}
 
 {% block body %}
@@ -48,9 +48,9 @@
 		<div id="app">
 			<div class="box-head-title ls2 fs18 fc2" style="text-align: center;line-height:80px;">健康风险曲线</div>
 			<p class="title-sub">调整生活方式,预知风险变化</p>
-			<img class="cancerImg" src="{{ url_for('static', filename='img/zxzx.png') }}"/>
+			<img class="cancerImg" src="${url_for('static', filename='img/zxzx.png')}"/>
 			<div class="title-sub-content" @click="jieShi()">
-				<span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="{{ url_for('static', filename='img/icon1.png') }}" style="width:18px;vertical-align: middle;"></span>
+				<span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="${url_for('static', filename='img/icon1.png')}" style="width:18px;vertical-align: middle;"></span>
 			</div>
 			<div class="progress-box">
 				<div class="progress-wrapper">
@@ -84,7 +84,7 @@
 				<div class="color1 list_headover fs13" style="height: 100%;">
 {#					{{Cdata.name}}#}
 					<div class="square" :class="{'square_rotate':index==0}"></div>
-					<img class="cancerImg" src="{{ url_for('static', filename='img/zxzx.png') }}"/>
+					<img class="cancerImg" src="${url_for('static', filename='img/zxzx.png')}"/>
 				</div>
 			</div>
 
@@ -95,16 +95,16 @@
 			<div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">专家建议</div>
 			<div class="spenbox ">
 				<div class="manybox">
-					<p class="one_list"><img src="{{ url_for('static', filename='img/11-17.png') }}" /><em class="ls2 fs14">壹博士怎么说？</em></p>
+					<p class="one_list"><img src="${url_for('static', filename='img/11-17.png')}" /><em class="ls2 fs14">壹博士怎么说？</em></p>
 					<div class="one_ment ls2 color2">恭喜你获得了"健康达人"，你的肺癌患病指数是55，排名第2222名，打败了26%的人群，风险正常。随着年龄增加，肺癌风险也会有一段上升区间，请密切关注健康风险曲线，参照专家建议，定期体检，小心预防哦~~</div>
 				</div>
 			<div class="manybox">
-				<p class="one_list"><img src="{{ url_for('static', filename='img/11-16.png') }}" /><em class="ls2 fs14">重点建议</em></p>
+				<p class="one_list"><img src="${url_for('static', filename='img/11-16.png')}" /><em class="ls2 fs14">重点建议</em></p>
 				<div class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">1.吸烟习惯减少<p class="one_ment_list color2 fs12">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p></div>
 				<div class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">1.吸烟习惯减少<p class="one_ment_list color2 fs12">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p><p class="one_ment_list color2">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p></div>
 			</div>
 				<div class="manybox">
-					<p class="one_list fs14"><img src="{{ url_for('static', filename='img/11-15.png') }}"/><em class="ls2">养生指南</em></p>
+					<p class="one_list fs14"><img src="${url_for('static', filename='img/11-15.png')}}"/><em class="ls2">养生指南</em></p>
 					<div class="one_ment_downlist"v-for="(data,index) in data" @click = "selectp($event)" :class="{'new_downlist':index==0}">
 						<div class="color1 list_headover fs13" >
 {#                            {{data.name}}#}
@@ -122,7 +122,7 @@
 
 
 {% block lazy_script%}
-    <script src="{{ url_for('static', filename='js/myCanvas.js') }}"></script>
+    <script src="${url_for('static', filename='js/myCanvas.js')}"></script>
 {% endblock %}
 
 

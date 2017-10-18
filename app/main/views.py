@@ -1,20 +1,24 @@
 # -*- coding: utf-8 -*-
-from flask import render_template
+from flask import render_template, Flask
 from . import main
-# from functools import wraps
-# from flask import make_response
 
 
-# def allow_cross_domain(fun):
-#     @wraps(fun)
-#     def wrapper_fun(*args, **kwargs):
-#         rst = make_response(fun(*args, **kwargs))
-#         rst.headers['Access-Control-Allow-Origin'] = 'docs.bto-dev.utoper.com:8081/user/'
-#         rst.headers['Access-Control-Allow-Methods'] = 'PUT,GET,POST,DELETE'
-#         allow_headers = "Referer,Accept,Origin,User-Agent"
-#         rst.headers['Access-Control-Allow-Headers'] = allow_headers
-#         return rst
-#     return wrapper_fun
+# 设置flask的变量用其他符号表示  解决与Vue.js 花括号的冲突
+
+
+class CustomFlask(Flask):
+    jinja_options = Flask.jinja_options.copy()
+    jinja_options.update(dict(
+        block_start_string='<%',
+        block_end_string='%>',
+        variable_start_string='%%',
+        variable_end_string='%%',
+        comment_start_string='<#',
+        comment_end_string='#>',
+    ))
+
+app = CustomFlask(__name__)
+app.config['DEBUG'] = True
 
 
 @main.route('/')
@@ -37,6 +41,6 @@ def info():
 
 # 报告信息
 @main.route('/canvas/')
-# @allow_cross_domain
 def canvas():
-    return render_template('canvas.html')
+    return render_template('canvan.html')
+

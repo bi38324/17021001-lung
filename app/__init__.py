@@ -28,5 +28,8 @@ def create_app(config_name='default'):
     from .api.v1 import api_v1_bp
     app.register_blueprint(main)
     app.register_blueprint(api_v1_bp, url_prefix='/api/v1/')
+    app.jinja_env.variable_start_string = '${'
+    app.jinja_env.variable_end_string = '}'
 
     return app
+

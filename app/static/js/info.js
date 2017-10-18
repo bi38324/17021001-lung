@@ -284,6 +284,7 @@ $('.sign-in').click(function(e){
                 },
                 success: function (data) {
                     var Data = data;
+                    $('.cartoon').show();
                     if(Data.accessToken){
                         $.ajax({
                             type: 'POST',
@@ -295,9 +296,9 @@ $('.sign-in').click(function(e){
                                     'appId': 'AP339457443459235841'
                             },
                             success: function(result){
-                                $('.cartoon').show();
                                 //存数据去下一页
                                      var str = JSON.stringify(result);
+                                     console.log(str);
                                     //存入
                                     sessionStorage.obj = str;
                                     sessionStorage.token = Data.accessToken;
@@ -307,7 +308,7 @@ $('.sign-in').click(function(e){
                     }
                 },
                 error: function(){
-                    console.log('获取参数错误');
+                    alert('获取参数错误');
                 }
               });
     }
@@ -316,20 +317,23 @@ $('.sign-in').click(function(e){
 // 点击不需要跳过按钮，实现页面跳转
 $('.refuse').click(function(e){
   e.preventDefault();
-    // $.ajax({
-    //      type: 'POST',
-    //      url: '/api/v1/algorithm/lung-cancer-2C/',
-    //      async: false,
-    //      data: JSON.stringify(val),
-    //      headers: {
-    //          'Content-Type': 'application/json',
-    //          'appId': 'AP339457443459235841'
-    //      },
-    //      success: function(result){
-    //           console.log(result);
-    //           window.location.href="/canvas/";
-    //      }
-    // });
-  window.location.href="/canvas/";
+    $.ajax({
+        type: 'POST',
+        url: '/api/v1/algorithm/lung-cancer-2C/',
+        async: false,
+        data: JSON.stringify(val),
+        headers: {
+              'Content-Type': 'application/json',
+                'appId': 'AP339457443459235841'
+        },
+        success: function(result){
+            //存数据去下一页
+                 var str = JSON.stringify(result);
+                //存入
+                sessionStorage.obj = str;
+                console.log(sessionStorage.obj);
+                // window.location.href = '/canvas/';
+        }
+    });
 });
 
