@@ -3,9 +3,9 @@
 	<meta name="format-detection" content="telephone=no" /> 
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/cityPicker.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/info.css') }}">
+	<link rel="stylesheet" href="${url_for('static', filename='css/reset.css')}">
+	<link rel="stylesheet" href="${url_for('static', filename='css/cityPicker.css')}">
+	<link rel="stylesheet" href="${url_for('static', filename='css/info.css')}">
 {% endblock %}
 
 {% block body %}
@@ -51,7 +51,7 @@
                   </div>
 				</li>
 			</ul>
-			<div class="button-wrapper">
+			<div class="submit_up">
 				<a href="javascript:void(0);" class="button"> 点击提交 </a>
 			</div>
 	</div>
@@ -85,18 +85,17 @@
 		</div>
 	</div>
     <div class="cartoon">
-        <div id="in" style="width:30px;height:30px; position:absolute;top: 50%;left:50%;transform: translate(-50%,-50%);"></div>
+        <div id="in" style="width:100px;height:100px; position:absolute;top: 50%;left:50%;transform: translate(-50%,-50%);"></div>
         <h3 style="color:#fff;position:absolute;bottom:30%;left:50%;transform:translateX(-50%);">数据加载中,请稍后</h3>
     </div>
 {% endblock %}
 
 {% block lazy_script%}
-	<script src="{{ url_for('static', filename='js/jquery-1.8.3.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/TimerButton.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/cityPicker.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/cityData.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/info.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/sonic.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/mySonic.js') }}"></script>
+	<script src="${url_for('static', filename='js/jquery-1.10.2.min.js')}"></script>
+	<script src="${url_for('static', filename='js/TimerButton.js')}"></script>
+	<script src="${url_for('static', filename='js/cityPicker.js')}"></script>
+	<script src="${url_for('static', filename='js/cityData.js')}"></script>
+	<script src="${url_for('static', filename='js/info.js')}"></script>
+	<script src="${url_for('static', filename='js/sonic.js')}"></script>
+	<script src="${url_for('static', filename='js/mySonic.js')}"></script>
 {% endblock %}
-

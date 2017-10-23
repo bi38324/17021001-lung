@@ -107,7 +107,7 @@ $('input').blur(function(){
 });
 
 // 点击按钮实现提交
-$('.button-wrapper').click(function(e){
+$('.submit_up').click(function(e){
 	e.preventDefault();
 	// 获取数据	
 	var key= '基本信息';
@@ -163,7 +163,7 @@ $('.button-wrapper').click(function(e){
     
     // 满足以上条件实现数据存储，页面的跳转
   	if(uname!="" && relationship!=""  && uage!="" && uweight!="" && uheight!="" && uplace!="" && $('.person .outcircle').hasClass('color')){
-  		console.log(val);
+  		// console.log(val);
       $(".phone").animate({
         height:'toggle',
         opacity:1
@@ -209,12 +209,12 @@ $('.button-wrapper').click(function(e){
           }else{
 
                var phone = $('#phone').val();
-               console.log(phone);
+               // console.log(phone);
               $('.right-code').hide();
               var data = {
                   phone:phone
               };
-              console.log(data);
+              // console.log(data);
               $.ajax({
                 type: 'POST',
                 url: '/api/v1/account/authcode/phone/',
@@ -225,7 +225,7 @@ $('.button-wrapper').click(function(e){
                 },
                 success: function (data) {
                     Data = data;
-                    console.log(Data)
+                    // console.log(Data)
                 },
                   error: function(){
                     console.log('获取参数错误')
@@ -256,6 +256,8 @@ $('.close').click(function(){
 });
 
 
+
+
 // 点击登录按钮
 
 $('.sign-in').click(function(e){
@@ -270,12 +272,13 @@ $('.sign-in').click(function(e){
             phone: phone,
             authcode:authcode
         };
-          console.log(authcode);
-        $.ajax({
+          // console.log(authcode);
+        $('.cartoon').show();
+           $.ajax({
                 type: 'POST',
                 url: '/api/v1/account/login/phone/',
                 data:JSON.stringify(auth_obj),
-                async:false,
+                async:true,
                 // dataType : "jsonp",//jsonp数据类型
                 // jsonp: "jsonpCallback",//服务端用于接收callback调用的function名的参数
                 headers: {
@@ -283,44 +286,95 @@ $('.sign-in').click(function(e){
                         'appId': 'AP339457443459235841'
                 },
                 success: function (data) {
-                    var Data = data;
-                    $('.cartoon').show();
-                    if(Data.accessToken){
+                    var Data = data.accessToken;
+                    var s = {
+                        'accessToken':Data
+                    };
+                    if(Data) {
                         $.ajax({
                             type: 'POST',
-                            url: '/api/v1/algorithm/lung-cancer-2C/',
-                            async: false,
-                            data: JSON.stringify(val),
+                            url: '/api/v1/sample/list/',
+                            async: true,
+                            data: JSON.stringify(s),
                             headers: {
-                                  'Content-Type': 'application/json',
-                                    'appId': 'AP339457443459235841'
+                                'Content-Type': 'application/json',
+                                'appId': 'AP339457443459235841'
                             },
-                            success: function(result){
-                                //存数据去下一页
-                                     var str = JSON.stringify(result);
-                                     console.log(str);
-                                    //存入
-                                    sessionStorage.obj = str;
-                                    sessionStorage.token = Data.accessToken;
-                                    window.location.href = '/canvas/';
+                            success: function (result) {
+                                //存用户的条形码和姓名过去
+                                var code = JSON.stringify(result);
+                                //存入
+                                localStorage.code = code;
+                                console.log(localStorage.code)
                             }
                         });
+
+                        // 调用模型
+                         $.ajax({
+                            type: 'POST',
+                            url: '/api/v1/algorithm/lung-cancer-2C/',
+                            async:true,
+                            data: JSON.stringify(val),
+                            headers: {
+                                'Content-Type': 'application/json',
+                                'appId': 'AP339457443459235841'
+                            },
+                            success: function (result) {
+                                //存模型返回数据
+                                var str = JSON.stringify(result);
+                                console.log(str);
+                                //存入
+                                localStorage.obj = str;
+                            }
+                        });
+
+                        //存AccessToken到下一页
+                        localStorage.token = Data;
+                        console.log(Data);
+                        window.location.href = '/canvas/';
+                        // $('.cartoon').hide();
                     }
                 },
                 error: function(){
                     alert('获取参数错误');
                 }
               });
+
     }
 });
+
+
+// 调用模型
+// function stul() {
+//     $.ajax({
+//         type: 'POST',
+//         url: '/api/v1/algorithm/lung-cancer-2C/',
+//         async:false,
+//         data: JSON.stringify(val),
+//         headers: {
+//             'Content-Type': 'application/json',
+//             'appId': 'AP339457443459235841'
+//         },
+//         success: function (result) {
+//             //存模型返回数据
+//             var str = JSON.stringify(result);
+//             console.log(str);
+//             //存入
+//             localStorage.obj = str;
+//         }
+//     });
+// }
+
 
 // 点击不需要跳过按钮，实现页面跳转
 $('.refuse').click(function(e){
   e.preventDefault();
-    $.ajax({
+  $('.cartoon').show();
+  // setTimeout(function(){
+     $.ajax({
         type: 'POST',
         url: '/api/v1/algorithm/lung-cancer-2C/',
-        async: false,
+        async: true,
         data: JSON.stringify(val),
         headers: {
               'Content-Type': 'application/json',
@@ -330,10 +384,13 @@ $('.refuse').click(function(e){
             //存数据去下一页
                  var str = JSON.stringify(result);
                 //存入
-                sessionStorage.obj = str;
-                console.log(sessionStorage.obj);
-                // window.location.href = '/canvas/';
+                localStorage.obj = str;
+                localStorage.token = '';//没有登录时，token为空
+                console.log(localStorage.obj);
+                $('.cartoon').hide();
+                window.location.href = '/canvas/';
         }
     });
-});
+  // },800);
 
+});

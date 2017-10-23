@@ -20,12 +20,26 @@ class SampleCodeResource(Resource):
         url = 'http://api.bto-dev.utoper.com/gene/sample/list'
         headers = {'content-type': 'application/json',
                    'appId': 'AP339457443459235841',
-                   'User-Agent': 'Mozilla/5.0 (X11; Ubuntu; Linux x86_64; rv:22.0) Gecko/20100101 Firefox/22.0',
                    'accessToken': accessToken}
-        req = requests.post(url, headers=headers)
+        data = {'code': ''}
+        req = requests.post(url, json=data, headers=headers)
         if req.ok:
             msg = req.json()
-            if msg['item']:
-                return msg['item']
-            return None
-        return None
+            if msg['items']:
+                code = []
+                for i in msg['items']:
+                    a = i['sampleId']
+                    url1 = 'http://api.bto-dev.utoper.com/gene/sample/show?sampleId=' + a
+                    headers = {'content-type': 'application/json',
+                               'appId': 'AP339457443459235841',
+                               'accessToken': accessToken}
+                    req = requests.post(url1, headers)
+                    if req.ok:
+                        examineeName = req.json()['examineeName']
+                        code.append({'examineeName': examineeName, 'code': req.json()['code'], 'user': 'old'})
+                return code
+            msg = {'user': 'new'}
+            return msg
+        return req.json()
+
+

@@ -26,11 +26,6 @@ body{ margin:0;
     top: 0px;
            }
 
-
-[v-cloak]{
-  display: none;
-}
-
 .circle_move{
   background: url(../img/circle.png) no-repeat;
   width: 24px;
@@ -156,44 +151,5 @@ input {
     width:100px;
     height: 30px;
     line-height: 30px;
-}
-
-.layui-layer-title{
-    width: 100%;
-    text-align: center;
-    font-size: 20px !important;
-    padding: 0 !important;
-    color:#1a1a1a !important;
-    background-color: #fff !important;
-}
-
-.layui-layer-btn .layui-layer-btn0{
-    border-color: #3fe2ea !important;
-    background-color: #3fe2ea !important;
-    color: #333431 !important;
-    font-size: 18px;
-    width:78px;
-}
-
-/* 关闭关闭按钮 */
-.layui-layer-setwin{
-    /* display: none; */
-}
-
-.reportList{
-    font-size: 18px;
-    color: #333333;
-}
-
-/* #report{
-    height：auto;
-} */
-
-.notice{
-  padding: 10px;  
-  border-top: 1px solid #b1b1b1;
-  color:#b1b1b1;
-  font-size: 14px;
-  text-align: center;
 }
 

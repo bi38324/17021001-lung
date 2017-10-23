@@ -3,8 +3,8 @@
 	<meta name="format-detection" content="telephone=no" /> 
 	<meta name="apple-mobile-web-app-capable" content="yes" />
 	<meta name="apple-mobile-web-app-status-bar-style" content="black">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/reset.css') }}">
-	<link rel="stylesheet" href="{{ url_for('static', filename='css/questionnaire.css') }}">
+	<link rel="stylesheet" href="${url_for('static', filename='css/reset.css')}">
+	<link rel="stylesheet" href="${url_for('static', filename='css/questionnaire.css')}">
 {% endblock %}
 
 {% block body %}
@@ -116,15 +116,16 @@
 				</ul>
 			</div>
 		</div>
-		<div class="button-wrapper">
-			<a href="javascript:void(0);" class="button"> 提交选择 </a>
-		</div>
+        <div class="button-wrapper">点击提交</div>
+{#		<div class="button-wrapper">#}
+{#			<a href="javascript:void(0);" class="button"> 提交选择 </a>#}
+{#		</div>#}
 	</div>
 {% endblock %}
 
 {% block lazy_script%}
-	<script src="{{ url_for('static', filename='js/jquery-1.10.2.min.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/checkbox.js') }}"></script>
-	<script src="{{ url_for('static', filename='js/index.js') }}"></script>
+	<script src="${url_for('static', filename='js/jquery-1.10.2.min.js')}"></script>
+	<script src="${url_for('static', filename='js/checkbox.js')}"></script>
+	<script src="${url_for('static', filename='js/index.js')}"></script>
 {% endblock %}
 

@@ -81,7 +81,7 @@ h1{
 }
 
 /*按钮*/
-.button-wrapper{
+.submit_up{
 	width:160px;
 	height: 40px;
 	background-color: rgb(64, 228, 237);
@@ -177,8 +177,8 @@ option{ color:#FFF;}
 
 /*手机号码验证*/
 .phone{
-	width: 80%;
-	height: 38%;
+	width: 300px;
+	height: 250px;
 	position:absolute;
 	top: 50%;
 	left: 50%;

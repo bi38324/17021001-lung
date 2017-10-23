@@ -26,11 +26,7 @@ class Lungcancer2CResource(Resource):
 
     def post(self):
         f = json.loads(request.get_data())
-        # f = request.json.get('f', None)
-        # print(f['肺部疾病史'])
         if f:
-            # tr = lung_cancer.delay(f)
-            # with open('/home/gaobiyu/17020401-BDMS-API/images.json') as ff:
             tr = lung_cancer(f)
             return jsonify(tr)
         else:

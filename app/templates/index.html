@@ -11,19 +11,19 @@
 <!-- <link rel="stylesheet" type="text/css" href="css/style.css" />
 <link rel="stylesheet" type="text/css" href="css/reset.css" />
 <link rel="stylesheet" type="text/css" href="css/index.css" /> -->
-<link href="{{ url_for('static', filename='css/style.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ url_for('static', filename='css/reset.css') }}" rel="stylesheet" type="text/css">
-<link href="{{ url_for('static', filename='css/index.css') }}" rel="stylesheet" type="text/css">
+<link href="${url_for('static', filename='css/style.css')}" rel="stylesheet" type="text/css">
+<link href="${url_for('static', filename='css/reset.css')}" rel="stylesheet" type="text/css">
+<link href="${url_for('static', filename='css/index.css')}" rel="stylesheet" type="text/css">
 <!-- <script type="text/javascript" src="js/jquery-1.10.2.min.js"></script>
 <script type="text/javascript" src="js/jquery.touchSwipe.min.js"></script> -->
-<script src="{{ url_for('static', filename='js/jquery-1.10.2.min.js') }}" language="javascript"></script>
-<script src="{{ url_for('static', filename='js/jquery.touchSwipe.min.js') }}" language="javascript"></script>
+<script src="${url_for('static', filename='js/jquery-1.10.2.min.js')}" language="javascript"></script>
+<script src="${url_for('static', filename='js/jquery.touchSwipe.min.js')}" language="javascript"></script>
 </head>
 	<body onmousewheel="return false;">
 		<div class="container">
 			<div class="page page0 cur" id="div">
 				<div class="title-wrapper">
-                    <img src="{{ url_for('static', filename='img/title.png') }}" class="img-responsive"/>
+                    <img src="${url_for('static', filename='img/title.png')}" class="img-responsive"/>
 					<span>肺 癌 患 病 指 数 智 能 评 估 系 统</span>
 				</div>
 				<div class="title-wrapper2">
@@ -51,7 +51,7 @@
 			    	<p>已 参 与 测 试 人 数</p>
 			    </div>
 			    <div class="number-wrapper">
-                    <img src="{{ url_for('static', filename='img/number.png') }}" class="img-responsive"/>
+                    <img src="${url_for('static', filename='img/number.png')}" class="img-responsive"/>
 			    	<div class="value"></div>
 			    </div>
 			    <div class="test-wrapper">
@@ -69,6 +69,6 @@
 			</div>
 		</div>
 	</body>
-	<script src="{{ url_for('static', filename='js/count.js') }}" language="javascript"></script>
-	<script src="{{ url_for('static', filename='js/myscript.js') }}" language="javascript"></script>
+	<script src="${url_for('static', filename='js/count.js')}" language="javascript"></script>
+	<script src="${url_for('static', filename='js/myscript.js')}" language="javascript"></script>
 </html>

@@ -22,5 +22,5 @@ api_v1.add_resource(AuthCodeResource, 'account/authcode/phone/',
                     endpoint='api_v1.account.authcode')
 api_v1.add_resource(LoginInResource, 'account/login/phone/',
                     endpoint='api_v1.account.login')
-api_v1.add_resource(SampleCodeResource, '/sample/list/',
-                    endpoint='api_v1.sample.list')
+api_v1.add_resource(SampleCodeResource, 'sample/list/',
+                    endpoint='api_v1.sample.samplecode')
