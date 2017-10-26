@@ -1,3 +1,4 @@
+
 $(document).ready(
     function() {
         var nowpage = 0;
@@ -31,13 +32,29 @@ $(document).ready(
 //     }
 // })
 
-// 人数统计
-$(".value").numberRock({
-    speed:20,
-    count:305178
-})
 
-// 给按钮绑定跳转事件
+// 读取本地文件计算总人数
+// var obj = {"c1":1,"c2":2};
+// var arr = Object.keys(obj);
+// var len = arr.length;
+// console.log(len);//结果为2
+
+
+var arr = [];
+$.getJSON("./static/config/rank_1023.json", function (data){
+ 　 var arr = Object.keys(data);
+    var number = arr.length;
+    console.log(number);
+    // 人数统计
+    $(".value").numberRock({
+        speed:20,
+        count:number
+    });
+});
+
+
+
+ // 给按钮绑定跳转事件
 $('.button-wrapper').click(function(){
 	window.location.href="/questionnaire/";
 });

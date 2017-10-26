@@ -13,9 +13,10 @@
 	<script src="${url_for('static', filename='js/layer-master/build/layer.js')}"></script>
 	<script src="${url_for('static', filename='js/vue.js')}" type="text/javascript" charset="utf-8"></script>
 	<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+{#    <script src="${url_for('static', filename='js/vconsole.min.js')}" type="text/javascript" charset="utf-8"></script>#}
 </head>
 <body>
-	<div id="content" v-cloak>
+	<div id="content">
 		<nav>
 			<div>ID:</div>
 			<div>分享</div>
@@ -30,135 +31,182 @@
 			<div></div>
 			<div>排名第<h2 style="display: inline-block;">{{ check_information.ranking }}</h2>名</div>
 		</div>
-		<div class="textbg"></div>
-		<h6>你打败了{{ check_information.percent }}的人群，获得</h6>
-		<h2 class="color1 ls2 text-margin">{{ check_information.chengHao }}</h2>
-		<h6 style="width: 260px; margin: 0 auto; color: #3ACFD6; line-height: 15px;">{{ check_information.simple_introduce }}</h6>
-		<p style="padding:45px 0 20px; color:#fff; text-align: center; font-size: 12px; color:#2EA2AB ;">> 关联基因数据获得定制化防癌方案，点击了解基因检测</p>
-		<!-- 老用户 -->
-		<div v-if="user">
-			<!-- tab栏切换 -->
-			<ul class="Tab">
-				<li onclick="old_Information()">关联基因报告</li>
-				<li class="bg2">购买基因数据</li>
-			</ul>
-			<!--老用户关联的报告-->
-			<div class="page-width">
-				<div id="report" style="display:none;" class="wenxian_content">
-					<div class="reportList" v-for="(reportData,index) in reportDatas" >
-						<span style="padding:10px 28px">{{ reportData.name }}</span><span style="padding: 10px 10px 10px 50px">{{ reportData.category }}</span><span>{{ reportData.code }}</span>
-					</div>
-					<div class="notice">
-						报告一旦绑定不可更改，请仔细核对姓名
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 新用户 -->
-		<div v-if="!user">
-			<ul class="Tab">
-				<li @click="new_Information">关联基因报告</li>
-				<li class="bg2">购买基因数据</li>
-			</ul>
-		</div>
-		<!-- 登录注册 -->
-		<!-- //判断是否登录 -->
-		<div v-if="!unloading" class="onload">
-			 <p class="title-sub2">请输入手机号保存数据获取基因数据</p>
-			 <div class="form-wrapper">
-					<input class="input-size" type="text"  placeholder="请输入手机号" value="" @click="callConfirm" id="phoneNum"><br>
-                    <input class="input-size1" type="text" placeholder="请输入验证码" value="" id="confirNum"><span class="input-size2">验证码</span><br>
-                    <span id="loading">登录</span>
+        <div class="text-wrapper">
+            <div class="textbg"></div>
+            <h6>你打败了{{ check_information.percent }}的人群，获得</h6>
+            <h2 class="color1 ls2 text-margin">{{ check_information.chengHao }}</h2>
+            <h6 style="width: 260px; margin: 0 auto; color: #3ACFD6; line-height: 15px;">{{ check_information.simple_introduce }}</h6>
+            <p style="padding:45px 0 20px; color:#fff; text-align: center; font-size: 12px; color:#2EA2AB ;">> 关联基因数据获得定制化防癌方案，点击了解基因检测</p>
+        </div>
+        <!-- 未登录 -->
+        <div v-if="unloading">
+             <!-- tab栏部分 -->
+            <div>
+                <ul class="Tab">
+                    <li @click="loading">关联基因报告</li>
+                    <li class="bg2">购买基因数据</li>
+                </ul>
+            </div>
+            <!-- 登录注册 -->
+            <div  class="loading">
+                 <p class="title-sub2">请输入手机号保存数据获取基因数据</p>
+                 <div class="form-wrapper">
+                        <input class="input-size" type="text"  placeholder="请输入手机号"  id="phoneNum"><br>
+                        <input class="input-size1" type="text" placeholder="请输入验证码"  id="confirNum"><button class="input-size2" @click="submitInformation" value="" id="btn">验证码</button><br>
+                        <div id="loading">登录</div>
+                 </div>
+            </div>
+            <!-- 健康风险曲线 -->
+            <div id="app">
+                <div class="box-head-title ls2 fs18 fc2" style="text-align: center;line-height:80px;">健康风险曲线</div>
+                <p class="title-sub">调整生活方式,预知风险变化</p>
+                <img class="cancerImg" :src="'/static/'+image_age" />
+                <div class="title-sub-content" @click="jieShi()">
+                    <span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="${url_for('static', filename='img/icon1.png')}" style="width:18px;vertical-align: middle;"></span>
+                </div>
+                <div class="progress-box">
+                    <div class="progress-wrapper">
+                        <div v-for="(categoryName,index) in categoryNames" class="progress-content">
+                            <span class="title fc1">{{ categoryName.name }}</span>
+                            <span id="grade" class="fc1" :ref="'grade'+index">{{ categoryName.num }}</span>
+                            <div id="barbox">
+                                <div class="scale" id="bar"  :ref="'bar'+index" @touchstart="move(index)">
+                                    <div id="bg" :ref="'bg'+index"></div>
+                                    <span id="btn" class="circle_move" :ref="'btn'+index"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="Tab">
+                    <li @click="changeResult">改变健康曲线</li>
+                    <li class="bg2" @click="recover">恢复默认曲线</li>
+                </ul>
+            </div>
 
-			 </div>
-		</div>
-		<!-- 健康风险曲线 -->
-		<div id="app">
-			<div class="box-head-title ls2 fs18 fc2" style="text-align: center;line-height:80px;">健康风险曲线</div>
-			<p class="title-sub">调整生活方式,预知风险变化</p>
-			<img class="cancerImg" >
-			<div class="title-sub-content" @click="jieShi()">
-				<span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="${url_for('static', filename='img/icon1.png')}" style="width:18px;vertical-align: middle;"></span>
-			</div>
-			<div class="progress-box">
-				<div class="progress-wrapper">
-					<div v-for="(categoryName,index) in categoryNames" class="progress-content">
-						<span class="title fc1">{{ categoryName.name }}</span>
-						<span id="grade" class="fc1" :ref="'grade'+index">{{ categoryName.num }}</span>
-						<div class="scale_panel">
-							<div class="scale" id="bar"  :ref="'bar'+index" @touchstart="move(index)">
-								<div id="bg" :ref="'bg'+index"></div>
-								<span id="btn" class="circle_move" :ref="'btn'+index"></span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<ul class="Tab">
-				<li @click="changeResult">改变健康曲线</li>
-				<li class="bg2">恢复默认曲线</li>
-			</ul>
-		</div>
-		<!-- 老用户才显示 -->
-		   <!--基因科学防癌  恶性肿瘤-->
-		<div v-if="!user">
-			<div id="cancer">
-				<div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">基因科学防癌</div>
-				<p class="ls2 fs12 color1" style="padding-top:70px;">有关基因的个性化防癌方案</p>
-				<!--<div id="cancerpicbox"></div>-->
-				<div class="cancerpicbox" @click ="selectp($event)" v-for="(value,index) in image" :class="{'new_downlist':index==0}">
-					<div class="color1 list_headover fs13" style="height: 100%;">
-						{{value.title}}
-						<div class="square" :class="{'square_rotate':index==0}"></div>
-						<img class="cancerImg" :src="'/static/'+value.url"/>
-					</div>
-				</div>
-			</div>
-		</div>
-		<!-- 老用户才显示 -->
-        <!--专家建议部分-->
-        <!--游客身份没有专家建议部分-->
-		<div v-if="unloading" id="specialist">
-			<div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">专家建议</div>
-			<div class="spenbox ">
-                <!--壹博士怎么说部分内容-->
-				<div class="manybox">
-					<p class="one_list"><img src="${url_for('static', filename='img/11-17.png')}" alt="" /><em class="ls2 fs14">壹博士怎么说？</em></p>
-					<div class="one_ment ls2 color2">{{check_information.introduce}}</div>
-				</div>
-                <!--重点建议部分内容-->
-				<div class="manybox">
-					<p class="one_list"><img src="${url_for('static', filename='img/11-16.png')}" alt="" /><em class="ls2 fs14">重点建议</em></p>
-					<div v-for="(important,index) in important" class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">
-						<p>
-							<span>
-                                {{index + 1}}.
-                            </span><span>
-                            {{important.title}}
-                        </span>
-						</p>
-						<p class="one_ment_list color2 fs12">
-                            {{important.value}}
-                        </p>
-					</div>
+        </div>
+        <!-- 登录 -->
+        <div v-if="!unloading">
+            <!-- tab栏部分 -->
+                <!-- 新用户 -->
+                <div v-if="!user">
+                    <ul class="Tab">
+                        <li @click="new_Information">关联基因报告</li>
+                        <li class="bg2">购买基因数据</li>
+                    </ul>
+                </div>
+                <!-- 老用户 -->
+                <div v-if="user">
+                    <ul class="Tab">
+                        <li onclick="old_Information()">关联基因报告</li>
+                        <li class="bg2">购买基因数据</li>
+                    </ul>
+                    <!--老用户关联的报告-->
+                    <div class="page-width">
+                        <div id="report" style="display:none;" class="wenxian_content">
+                            <div class="reportList" v-for="(reportData,index) in reportsCode" >
+                                <span>{{ reportData.examineeName }}</span><span style="padding: 10px 10px 10px 50px">编码：</span><span>{{ reportData.code }}</span>
+                            </div>
+                            <div class="notice">
+                                报告一旦绑定不可更改，请仔细核对姓名
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 健康风险曲线 -->
+                <div id="app">
+                    <div class="box-head-title ls2 fs18 fc2" style="text-align: center;line-height:80px;">健康风险曲线</div>
+                    <p class="title-sub">调整生活方式,预知风险变化</p>
+                    <img class="cancerImg" :src="'/static/'+image_age">
+                    <div class="title-sub-content" @click="jieShi()">
+                        <span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="${url_for('static', filename='img/icon1.png')}" style="width:18px;vertical-align: middle;"></span>
+                    </div>
+                    <div class="progress-box">
+                        <div class="progress-wrapper">
+                            <div v-for="(categoryName,index) in categoryNames" class="progress-content" >
+                                <span class="title fc1">{{ categoryName.name }}</span>
+                                <span id="grade" class="fc1" :ref="'grade'+index">{{ categoryName.num }}</span>
+                                <div id="barbox">
+                                    <div class="scale" id="bar"  :ref="'bar'+index" @touchstart="move(index)">
+                                        <div id="bg" :ref="'bg'+index"></div>
+                                        <span id="btn" class="circle_move" :ref="'btn'+index"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="Tab">
+                        <li @click="changeResult">改变健康曲线</li>
+                        <li class="bg2" @click="recover">恢复默认曲线</li>
+                    </ul>
+                </div>
+                <!--基因科学防癌  恶性肿瘤-->
+                <!--只有老用户才有该数据-->
+                <div v-if="user">
+                        <div id="cancer">
+                            <div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">基因科学防癌</div>
+                            <p class="ls2 fs12 color1" style="padding-top:70px;">有关基因的个性化防癌方案</p>
+                            <!--<div id="cancerpicbox"></div>-->
+                            <div class="cancerpicbox" @click ="selectp($event)" v-for="(value,index) in image" :class="{'new_downlist':index==0}">
+                                <div class="color1 list_headover fs13" style="height: 100%;">
+                                    {{value.title}}
+                                    <div class="square" :class="{'square_rotate':index==0}"></div>
+                                    <img class="cancerImg" :src="'/static/'+value.url"/>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div  id="specialist">
+                    <div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">专家建议</div>
+                    <div class="spenbox ">
+                        <!--壹博士怎么说部分内容-->
+                        <div class="manybox">
+                            <p class="one_list"><img src="${url_for('static', filename='img/11-17.png')}" alt="" /><em class="ls2 fs14">壹博士怎么说？</em></p>
+                            <div class="one_ment ls2 color2">{{check_information.introduce}}</div>
+                        </div>
+                        <!--重点建议部分内容-->
+                        <div class="manybox">
+                            <p class="one_list"><img src="${url_for('static', filename='img/11-16.png')}" alt="" /><em class="ls2 fs14">重点建议</em></p>
+                            <div v-for="(important,index) in important" class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">
+                                <p>
+                                    <span>
+                                        {{index + 1}}.
+                                    </span><span>
+                                    {{important.title}}
+                                </span>
+                                </p>
+                                <p class="one_ment_list color2 fs12">
+                                    {{important.value}}
+                                </p>
+                            </div>
+                        </div>
+                        <!--养生指南部分内容-->
+                        <div class="manybox">
+                            <p class="one_list fs14"><img src="${url_for('static', filename='img/11-15.png')}" alt="" /><em class="ls2">养生指南</em></p>
+                            <div class="one_ment_downlist" v-for="(data,index) in healthy" @click = "selectp($event)" :class="{'new_downlist':index==0}">
+                                <div class="color1 list_headover fs13" >
+                                    {{data.title}}
+                                    <div class="square" :class="{'square_rotate':index==0}"></div>
+                                </div>
+                                <p class="padT5 color2 fs12">
+                                    {{data.value}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-				</div>
-                <!--养生指南部分内容-->
-				<div class="manybox">
-					<p class="one_list fs14"><img src="${url_for('static', filename='img/11-15.png')}" alt="" /><em class="ls2">养生指南</em></p>
-					<div class="one_ment_downlist" v-for="(data,index) in healthy" @click = "selectp($event)" :class="{'new_downlist':index==0}">
-						<div class="color1 list_headover fs13" >
-                            {{data.title}}
-							<div class="square" :class="{'square_rotate':index==0}"></div>
-						</div>
-						<p class="padT5 color2 fs12">
-                            {{data.value}}
-                        </p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
+        </div>
+
+        <div class="footer">
+            <div class="imgWrapper">
+                 <img src="${url_for('static', filename='img/icon2.png')}" style="width:140px"/>
+            </div>
+            <p class="footer-text1">扫一扫关注公众号</p>
+            <p class="footer-text1">了解防癌资讯</p>
+            <p class="footer-text2">＞有机会赢取新人大礼包＜</p>
+        </div>
+    </div>
 	<script>
 	// 判断是移动还是pc
 	function IsPC() {
@@ -191,20 +239,17 @@
 			results:'',//接收请求的数据
 			check_information:'',
 			image:'',
+            image_age:"",
 			important:'',
             fig_show:'',//用户项目检测风险等级
+            init_fig_show:'',//用户项目检测风险等级初始值
 			number:'',//用户得分
 			showNum: [],//存储每个项目的级别
-			unloading:false,//true：没有登录  false:登录
+			unloading:true,//true：没有登录  false:登录
+            code:"",//存放用户信息
 			user:false,//true:老用户 false:新用户
-			reportDatas:[
-				{name:"谢霆锋",category:"编码",code:"1222222222"},
-				{name:"古天乐",category:"编码",code:"1222233222"},
-				{name:"黄晓明",category:"编码",code:"1222233322"},
-				{name:"谢霆锋",category:"编码",code:"1222222222"},
-				{name:"古天乐",category:"编码",code:"1222233222"},
-				{name:"黄晓明",category:"编码",code:"1222233322"}
-			 ],
+            reportsCode:'',//关联用户信息
+            barX:"",//包裹滑块的父盒子距离视窗的距离
 			candata: [{
 				name:"吸烟影响指数"
 			},{
@@ -220,13 +265,13 @@
 			},{
 				name:"健康饮食影响指数"
 			}],
-			step: [{ value: 0, beforeMove: 0, afterMove: 0, symbol:0},
-				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},
-				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},
-				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},
-				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},
-				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},
-				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0}
+			step: [{ value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0}
 				  ],        //初始化每个滚轮步长值
 		    categoryNames: [
 				{
@@ -260,34 +305,53 @@
 		},
 		mounted:function(){
 			this.preview();
+			console.log(this);
+			var that =this;
+			Vue.nextTick(function () {
+			    console.log(that);
+                that.drawCircle();
+             })
 		},
-		updated:function(){
-			this.drawCircle();//数据更新后调用
-		},
+
 		methods:{
 			preview:function(){
                 this.results = JSON.parse(window.localStorage.obj);
-
-                console.log(this.results);
-{#                console.log(this.results.image_age.title)#}
+                this.important = this.results.important;
+				this.healthy = this.results.healthy;//养生指南部分
+                this.image = this.results.image;
+				this.check_information = this.results.check_information;
+				this.number = this.check_information.zhiShu;//获取用户得分
+                this.image_age = this.results.image_age[0].url;//获取图片URL
+                this.values = JSON.parse(window.localStorage.val);
+                this.val = this.values.val;
+                console.log(this.val);
                 //判断是否登录
                 if(window.localStorage.token==''){
                    console.log("未登录");
-                   this.unloading = false;//token为空表示没有登录
-                   this.user = false ;//未登录，没有基因相关报告
-                }
+                   this.unloading = true;//token为空表示没有登录
+				}
                 else{
                    console.log("已经登录");
-                   this.unloading = true;//token有值表示没有登录
+                   this.unloading = false;//token有值表示登录
+                   this.reportsCode =  JSON.parse(window.localStorage.code);//获取用户信息
+                   if(this.reportsCode[0].user=="old"){
+                       this.user = true;//老用户
+                   }
+                   else if(this.reportsCode[0].user=="new"){
+                       this.user = false;//新用户
+                   }
+                   console.log(this.reportsCode);
                 }
-
+                this.barX = document.getElementById("barbox").offsetLeft;//计算包裹滑块的父盒子距离视窗的距离
                 this.fig_show =  this.results.fig_show ;
+                this.init_fig_show = this.results.fig_show;//存取默认的fig_show数据
+                console.log("用户初始信息"+this.init_fig_show);
                 //接收用户检测项目风险等级
                 for(var i = 0 ;i< this.fig_show.length;i++){
                     this.categoryNames[i].num = this.fig_show[i];
                     var btn = this.$refs['btn' + i][0];//获取滚轮;
                     var bg =  this.$refs['bg' + i][0];//获取进度条dom;
-                    var bar = this.$refs['bar' + 0][0];//获取进度条容器dom;
+                    var bar = this.$refs['bar' + i][0];//获取进度条容器dom;
 				    var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度
                     var btnWidth = btn.offsetWidth;//滚轮的宽度
                     //计算滚轮和精度条初始位置
@@ -299,18 +363,11 @@
                     }
                     else{
                         bg.style.width = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
-                         btn.style.left = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                        btn.style.left = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
                     }
                     console.log(this.categoryNames[i].num);
                 }
-				this.important = this.results.important;
-				this.healthy = this.results.healthy;//养生指南部分
-                this.image = this.results.image;
-				this.check_information = this.results.check_information;
-				this.number = this.check_information.zhiShu;//获取用户得分
-                var code = JSON.parse(window.localStorage.code);
-                console.log(code.user);
-{#                console.log(window.localStorage.code.user);#}
+
 			},
 			selectp:function(event){
 				event.currentTarget.classList.toggle("new_downlist");
@@ -326,13 +383,9 @@
 				var btnWidth = btn.offsetWidth;//滚轮的宽度
 				var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度
 				var max = barWidth - btnWidth;//滑块滑动的最大距离
-				if (that.step[index].symbol == 0) {
-					that.step[index].beforeMove = event.changedTouches[0].pageX;
-					that.step[index].symbol = 1;//只在第一次加载时获取包裹进度条的盒子的坐标
-				}
-				bar.ontouchmove = function (event) {
-					that.step[index].afterMove = event.changedTouches[0].pageX;//获取滑动时的坐标
-					that.step[index].value = that.step[index].afterMove - that.step[index].beforeMove;//滑动前后坐标差
+				btn.ontouchmove = function (event) {
+                    that.step[index].afterMove = event.changedTouches[0].pageX;//获取滑动时的坐标#;
+					that.step[index].value = that.step[index].afterMove - that.barX;//
 					if (that.step[index].value <= btnWidth) {
 						that.step[index].value = 0;//坐标差小于滑块的宽度，不移动
 					}
@@ -348,38 +401,101 @@
 					that.categoryNames[index].num = that.showNum[index];
 				}
 				//手指移开,停止移动
-				bar.ontouchend = function (event) {
-					bar.ontouchmove = null;
+				btn.ontouchend = function (event) {
+					btn.ontouchmove = null;
 				}
 			},
             //手机登录验证
-            callConfirm:function(){
-              phoneNum.onclick = function () {
+            submitInformation:function(){
+			    var phoneNum = document.getElementById("phoneNum");//获取手机号码dom
+                var confirNum = document.getElementById("confirNum");//获取验证码dom
+                var btn = document.getElementById("btn");//验证码按钮
                 var phoneReg = /^(\+86|0086)?\s*1[34578]\d{9}$/;//定义手机号码规则
-                var number = iphone.value;//获取手机号码
+                var number = phoneNum.value;//获取手机号码
                 if(!phoneReg.test(number)){
                     alert("对不起你输入的手机号码不对");
                 }
                 else{
-                    console.log("手机号码正确");
-                }
-                console.log(number);
-                bt01.disabled = true;  //当点击后倒计时时候不能点击此按钮
-                var time = 60;  //倒计时5秒
-                var timer = setInterval(fun1, 1000);  //设置定时器
-                function fun1() {
-                    time--;
-                    if (time >= 0) {
-                        bt01.innerHTML = time + "s后重新发送";
+                    btn.disabled = true;  //当点击后倒计时时候不能点击此按钮
+                    var time = 60;  //倒计时5秒
+                    var timer = setInterval(fun1, 1000);  //设置定时器
+                    function fun1() {
+                        time--;
+                        if (time >= 0) {
+                             btn.innerHTML = time + "s后重新发送";
+                        }
+                        else {
+                             btn.innerHTML = "重新发送验证码";
+                             btn.disabled = false;  //倒计时结束能够重新点击发送的按钮
+                             clearTimeout(timer);  //清除定时器
+                             time = 60;  //设置循环重新开始条件
+                        }
                     }
-                    else {
-                        bt01.innerHTML = "重新发送验证码";
-                        bt01.disabled = false;  //倒计时结束能够重新点击发送的按钮
-                        clearTimeout(timer);  //清除定时器
-                        time = 60;  //设置循环重新开始条件
-                    }
+                    this.$http.post("/api/v1/account/authcode/phone/",{phone:number}).then(
+                       function (res) {
+                          // 处理成功的结果
+                        console.log("手机号码发送成功");
+                        console.log(res);
+                        var loading = document.getElementById("loading");//获取登录按钮
+                        var that = this;//变量替换
+                        loading.onclick=function(){
+                            var phoneCode = confirNum.value;//获取用户填写的验证码
+                            console.log("打印用户验证码"+phoneCode);
+                            that.$http.post("/api/v1/account/login/phone/",{phone:number,authcode:phoneCode,val:this.val}).then(
+                            function(response){
+                               console.log("验证码通过");
+                               that.unloading = false;//用户登录状态
+
+                                that.fig_show =  that.results.fig_show ;
+                                //接收用户检测项目风险等级
+                                for(var i = 0 ;i< that.fig_show.length;i++){
+                                    that.categoryNames[i].num = that.fig_show[i];
+                                    var btn = that.$refs['btn' + i][0];//获取滚轮;
+                                    var bg =  that.$refs['bg' + i][0];//获取进度条dom;
+                                    var bar = that.$refs['bar' + 0][0];//获取进度条容器dom;
+                                    var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度
+                                    var btnWidth = btn.offsetWidth;//滚轮的宽度
+                                    //计算滚轮和精度条初始位置
+                                    //用户风险等级若为0，则不减去滚轮的宽度
+                                    if(that.categoryNames[i].num==0){
+                                        console.log("用户等级为0");
+                                        bg.style.width =((that.categoryNames[i].num/5)*barWidth+btnWidth)+ 'px';
+                                        btn.style.left = (that.categoryNames[i].num/5)*barWidth+ 'px';
+                                    }
+                                    else{
+                                        bg.style.width = ((that.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                                        btn.style.left = ((that.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                                    }
+                                    console.log(that.categoryNames[i].num);
+                                }
+
+                               var userID = response.body.accessToken;
+                                   //提交userID判断新用户与老用户
+                                   that.$http.post("/api/v1/sample/list/",{accessToken:userID}).then(
+                                   function(response) {
+                                      console.log("获取数据成功");
+                                      console.log(response);
+                                       //新用户
+                                      if(response.body[0].user=="new"){
+                                            that.user = false;//新用户状态
+                                      }
+                                       //老用户
+                                      else if(response.body[0].user=="old"){
+                                            that.user = true;//老用户状态
+                                            that.reportsCode = response.body;//老用户信息
+                                      }
+                                  });
+                            },function(response){
+                               console.log("验证码失败");
+                                });
+                        }
+                     },function (res) {
+                        console.log("手机号码发送失败");
+                        // 处理失败的结果
+                    });
                 }
-    }
+
+
             },
 			//canvas画图
 			drawCircle:function(){
@@ -446,10 +562,64 @@
 				content: '<div style="color:#25384c ;font-size:14px;text-align:left; letter-spacing:2px;margin:0 auto; padding:15px 10px 10px 15px;line-height:22px;border-bottom 1px solid #3fc5e5;"><div><b>风险模型包括8个生活习惯以及环境因素位点：</b></div><div><b>1.吸烟指数：</b>吸烟指数=每日吸烟根数*总吸烟年数，分为6档，0档为0，5档为401+，贡献率30% </div><div font-size:14px ><b>2.BMI指数：</b>分为6档，0档为<18.5，5档为40+，贡献率5% </div><div><b>3.职业影响：</b>分为6档，0档为工作环境无污染，5档为毒气工作环境，贡献率10%</div><div><b>4.运动：</b>分为6档，0档为每日运动0分钟，5档为160分钟+，贡献率5%</div><div><b>5.PM2.5指数：</b>分为6档，0档为PM2.5指数0，5档为2500+，贡献率10%</div><div><b>6.健康饮食：</b>分为6档，0档为从不摄取此类食物，5档为大量摄取，贡献率5%</div><div><b>7.非健康饮食：</b>分为6档，0档为从不摄取此类食物，5档为大量摄取，贡献率5%</div><div><b>8.遗传病史：</b>分为2档，0档为无家族遗传史，5档为有家族遗传史，贡献率15% 。此外，基因贡献率为15% 。</div><div><b></b>健康风险曲线模型目前仅涵盖20-80岁的风险变化，因为20岁以下风险较小，80岁以上风险也趋于稳定。参考文献：Cancer Statistics in China, 2015。</div></div>'
 				});
 			},
+            //未登录弹窗提醒
+            loading:function(){
+                layer.open({
+						title: '提示',
+						type: 1,
+						area: ['295px', '170px'], //此处设置宽高
+						skin: 'demo-class', //样式类名
+						closeBtn: 0, //不显示关闭按钮
+						shade: [0.8, '#a0a0a0'],
+						btn: '知道了',
+						btnAlign: 'c',
+						shadeClose: false,
+						content: '<div style="color:#25384c ;font-size:14px;text-align:left; letter-spacing:2px;margin:0 auto; padding:15px 10px 10px 15px;line-height:22px;border-bottom 1px solid #3fc5e5;"><div style="text-align:center"></div><div style="color:#666666;font-size:16px">对不起，若想查看更多信息，请您先登录</div></div>'
+					});
+            },
 			//改变健康曲线
 			changeResult:function(){
+                console.log(this.categoryNames);
+                var fig_data = this.results.fig_data;
+                var fig_index = this.results.fig_index;
+                var fig_show=[];
+                for(var i=0;i<this.categoryNames.length;i++){
+                    fig_show[i] = this.categoryNames[i].num;
+                }
+                console.log(fig_show);
+                this.$http.post("/api/v1/algorithm/lung-cancer-2C/",{fig_data:fig_data,fig_index:fig_index,fig_show:fig_show}).then(
+                    function (res) {
+                        console.log("改变健康曲线成功");
+                        console.log(JSON.parse(res));
+                    },function (res){
+                      console.log("改变健康曲线失败")
+                    });
 
 			},
+            //恢复默认曲线
+            recover:function(){
+                 //恢复用户检测项目风险初始等级
+                for(var i = 0 ;i< this.init_fig_show.length;i++){
+                    this.categoryNames[i].num = this.init_fig_show[i];
+                    var btn = this.$refs['btn' + i][0];//获取滚轮;
+                    var bg =  this.$refs['bg' + i][0];//获取进度条dom;
+                    var bar = this.$refs['bar' + i][0];//获取进度条容器dom;
+				    var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度
+                    var btnWidth = btn.offsetWidth;//滚轮的宽度
+                    //计算滚轮和精度条初始位置
+                    //用户风险等级若为0，则不减去滚轮的宽度
+                    if(this.categoryNames[i].num==0){
+                        console.log("用户等级为0");
+                        bg.style.width =((this.categoryNames[i].num/5)*barWidth+btnWidth)+ 'px';
+                        btn.style.left = (this.categoryNames[i].num/5)*barWidth+ 'px';
+                    }
+                    else{
+                        bg.style.width = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                        btn.style.left = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                    }
+                    console.log(this.categoryNames[i].num);
+                }
+            },
 			// 新用户弹窗
 			new_Information:function(){
 				layer.open({

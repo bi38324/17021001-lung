@@ -33,6 +33,9 @@ $(function(){
     let arr2 = [];
    $(".button-wrapper").on('touchstart',function(e){
     	e.preventDefault();
+    	$(".button-wrapper").css({
+			'backgroundColor':'#03C5D2'
+		});
     	if($(".list-wrapper li span").hasClass("radio_span--checked")|| $(".list-wrapper li span").hasClass("check_span--checked")){
     		$(".select-wrapper").children('.inner-wrapper').each(function(index,element){
     			key = $(this).children('h3').text();// 获取标题的名字
@@ -63,23 +66,24 @@ $(function(){
     					key2 = '职业接触史';
     					selectObj[key2] = arr2;
     					let obj = JSON.stringify(selectObj);
-    					sessionStorage.setItem('key',obj);
+    					localStorage.setItem('key',obj);
     					window.location.href="/info/";
     				});
 				}
         	});
         }
-        $(".button-wrapper").animate({
-			'opacity': 1,
-			'color': '#fff'
-		 });
     });
+	$(".button-wrapper").on('touchmove',function(e){
+		e.preventDefault();
+		$(".button-wrapper").css({
+			'backgroundColor':'##03C5D2'
+		});
+	});
 
     $(".button-wrapper").on('touchend',function(e){
-    		e.preventDefault();
-		 $(".button-wrapper").animate({
-			 'opacity': 0.8,
-			 'color': '#fff'
-		 });
+		e.preventDefault();
+		$(".button-wrapper").css({
+			'backgroundColor':'#3FE1EB'
+		});
 	});
 });

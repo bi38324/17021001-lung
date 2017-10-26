@@ -38,7 +38,7 @@ class DevelopmentConfig(Config):
 
 
 class TestingConfig(Config):
-    MONGO_HOST = '116.62.203.65'
+    MONGO_HOST = '121.43.38.66'
     MONGO_PORT = 27017
     MONGO_DBNAME = 'bto'
     MONGO_USERNAME = 'bto'
@@ -58,5 +58,5 @@ config = {
     'development': DevelopmentConfig,
     'testing': TestingConfig,
     'production': ProductionConfig,
-    'default': ProductionConfig,
+    'default': TestingConfig,
 }

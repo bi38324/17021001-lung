@@ -2,7 +2,9 @@
 .fc1{
    color: #3fe3e8;
 }
-
+[v-cloak] {
+  display: none;
+}
 .fc2{
     color:#ffffff;
 }
@@ -15,16 +17,16 @@ body{ margin:0;
     width: 375px;
     height: auto;
     margin: 0 auto;
-    background-color: #081924;
+    /*background-color: #081924;*/
        }
-.scale_panel{
+#barbox{
     color: #ffffff;
     width: 247px;
     position: absolute;
     line-height: 18px;
     left: 84px;
     top: 0px;
-           }
+}
 
 .circle_move{
   background: url(../img/circle.png) no-repeat;
@@ -135,21 +137,97 @@ input {
 }
 
 .input-size{
-    width:280px;
-    height: 30px;
-    line-height: 30px;
+    width: 80%;
+    height: 36px;
+    line-height: 36px;
     margin: 10px auto;
+    background: #154854;
+    color: #ffffff;
+    border-width: 0;
+    border: 1px solid #3fe2ea;
 }
 
 .input-size1{
-    width:180px;
-    height: 30px;
-    line-height: 30px;
+   width: 45%;
+    height: 36px;
+    line-height: 36px;
+    /* border: 1px; */
+    background: #154854;
+    color: #ffffff;
+    border-width: 0;
+    border: 1px solid #3fe2ea;
 }
 
 .input-size2{
-    width:100px;
-    height: 30px;
-    line-height: 30px;
+    line-height: 36px;
+    height: 36px;
+    width: 35%;
+    background: #154854;
+    color: #ffffff;
+    border-width: 0;
+    border: 1px solid #3fe2ea;
+    border-left: 0;
+
+}
+#loading{
+    background: #3fe2ea;
+    padding: 5px 0;
+    color: #355f60;
+    width: 80%;
+    margin: 5px auto;
+    text-align: center;
+    border: 1px solid #3fe2ea;
+}
+
+.reportList {
+    padding: 10px 15px;
+    font-size: 16px;
+    border: 1px solid #cfcbcb;
+    color: #333333;
+}
+.notice{
+    text-align: center;
+    padding: 15px;
+    color: #c6c6c6;
+}
+
+.layui-layer-title{
+    border-bottom:0 !important;
+    color: #333333 !important;
+    background-color: #ffffff !important;
+}
+
+.layui-layer-btn, .layui-layer-btn0{
+    /*border-color: #3fe2ea !important;*/
+    /*background-color: #3fe2ea !important;*/
+    /*color: #333333 !important;*/
+    /*width: 80px;*/
+    /*font-size: 16px;*/
+}
+
+.notice{
+    text-align: center;
+}
+.footer{
+    margin: 15px auto;
+}
+
+.imgWrapper{
+    text-align: center;
+}
+.footer-text1{
+    text-align: center;
+    font-size:16px;
+    color: #ffffff;
+    margin:5px auto;
+}
+.footer-text2{
+   text-align: center;
+    font-size:14px;
+    color: rgb(46, 162, 171);
+}
+
+.text-wrapper{
+    position: relative;
 }
 

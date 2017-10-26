@@ -25,9 +25,11 @@ class Lungcancer2CResource(Resource):
         }
 
     def post(self):
-        f = json.loads(request.get_data())
+        f = json.loads(request.get_data().decode('utf-8'))
         if f:
             tr = lung_cancer(f)
+            # with open('tmp.json', 'w') as ff:
+            #     json.dump(tr, ff, indent=4, ensure_ascii=False)
             return jsonify(tr)
         else:
             return {'msg': 'f参数必须输入'}, 400

@@ -13,11 +13,10 @@ a:hover { color: #D40000; text-decoration: none}
 .button {display: inline-block;zoom: 1; *display: inline;vertical-align: baseline;margin: 0 2px;outline: none;cursor: pointer;text-align: center;text-decoration: none;font: 14px/100% Arial, Helvetica, sans-serif;padding:0.25em 0.6em 0.3em;text-shadow: 0 1px 1px rgba(0,0,0,.3);-webkit-border-radius: .5em; -moz-border-radius: .5em;border-radius: .5em;-webkit-box-shadow: 0 1px 2px rgba(0,0,0,.2);-moz-box-shadow: 0 1px 2px rgba(0,0,0,.2);box-shadow: 0 1px 2px rgba(0,0,0,.2);
 }
 .red {color: #faddde;border: solid 1px #980c10;background: #d81b21;background: -webkit-gradient(linear, left top, left bottom, from(#ed1c24), to(#A51715));background: -moz-linear-gradient(top,  #ed1c24,  #A51715);filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#ed1c24', endColorstr='#aa1317'); font-size:14px!important;}
-}
 .red:hover { background: #b61318; background: -webkit-gradient(linear, left top, left bottom, from(#c9151b), to(#a11115)); background: -moz-linear-gradient(top,  #c9151b,  #a11115); filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#c9151b', endColorstr='#a11115'); color:#fff;}
 .red:active {color: #de898c;background: -webkit-gradient(linear, left top, left bottom, from(#aa1317), to(#ed1c24));background: -moz-linear-gradient(top,  #aa1317,  #ed1c24);filter:  progid:DXImageTransform.Microsoft.gradient(startColorstr='#aa1317', endColorstr='#ed1c24');}
-.keTitle{ height: 60px; line-height: 60px; font-size: 28px; font-family: '微软雅黑'; color: #FFF; text-align: center; background: url(../images/bodyBg1.gif) repeat-x left bottom; font-weight: normal; position: absolute; width: 100%; left: 0; top: 0; z-index: 999; padding: 0px 0px 8px; opacity:0.8; }
-.keBottom{ color: #FFF; height: 60px; text-align: center; background: url(../images/bodyBg2.gif) repeat-x left top; position: absolute; width: 100%; left: 0; bottom: 0; z-index: 999; font: 18px/60px "微软雅黑"; padding: 3px 0px 5px; opacity:0.8;}
+.keTitle{ height: 60px; line-height: 60px; font-size: 28px; font-family: '微软雅黑'; color: #FFF; text-align: center;  font-weight: normal; position: absolute; width: 100%; left: 0; top: 0; z-index: 999; padding: 0px 0px 8px; opacity:0.8; }
+.keBottom{ color: #FFF; height: 60px; text-align: center; position: absolute; width: 100%; left: 0; bottom: 0; z-index: 999; font: 18px/60px "微软雅黑"; padding: 3px 0px 5px; opacity:0.8;}
 .keBottom a,.keBottom a:hover{color:#fff;}
 /*www.jq22.com CSS结束，应用特效时，以上样式可删除*/
 /* 效果CSS开始 */

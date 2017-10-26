@@ -6,6 +6,7 @@
 	<link rel="stylesheet" href="${url_for('static', filename='css/reset.css')}">
 	<link rel="stylesheet" href="${url_for('static', filename='css/cityPicker.css')}">
 	<link rel="stylesheet" href="${url_for('static', filename='css/info.css')}">
+    <link rel="stylesheet" href="${url_for('static', filename='css/city-picker.css')}">
 {% endblock %}
 
 {% block body %}
@@ -45,9 +46,7 @@
 				<li class="place">
 					<div class="circle"><i></i></div>
 					<div class="hqyzb_box place">
-	                    <input type="text" id="cityChoice" placeholder="常住地" class="item">
-	                    <input type="hidden" id="province" value="">
-	                    <input type="hidden" id="city" value="" class="item">
+	                   <input type="text" class="city" id="cityChoice" readonly placeholder="常住地">
                   </div>
 				</li>
 			</ul>
@@ -93,9 +92,14 @@
 {% block lazy_script%}
 	<script src="${url_for('static', filename='js/jquery-1.10.2.min.js')}"></script>
 	<script src="${url_for('static', filename='js/TimerButton.js')}"></script>
-	<script src="${url_for('static', filename='js/cityPicker.js')}"></script>
-	<script src="${url_for('static', filename='js/cityData.js')}"></script>
+{#	<script src="${url_for('static', filename='js/cityPicker.js')}"></script>#}
+{#	<script src="${url_for('static', filename='js/cityData.js')}"></script>#}
 	<script src="${url_for('static', filename='js/info.js')}"></script>
 	<script src="${url_for('static', filename='js/sonic.js')}"></script>
 	<script src="${url_for('static', filename='js/mySonic.js')}"></script>
+    <script src="${url_for('static', filename='js/city-picker.js')}"></script>
+    <script>
+        $("#cityChoice").CityPicker();
+    </script>
 {% endblock %}
+

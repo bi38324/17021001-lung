@@ -141,9 +141,8 @@ option{ color:#FFF;}
 	top: 50%;
 	left: 50%;
 	transform: translate(-50%,-50%);
-	background-color: rgba(64, 228, 237,1);
-	border-radius: 5px;
-	color: #fff;
+	background-color: #fff;
+	color: #000;
 	display: none;
 }
 .mask .close{

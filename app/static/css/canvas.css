@@ -31,7 +31,7 @@
 		}
 		/*竖屏*/
 	}
-	#content{width:100%;background:url(../img/壹基因健康智能检测-3.jpg) no-repeat;background-size: 100% 100%;}
+	#content{width:100%;background:url(../img/壹基因健康智能检测-3.jpg) no-repeat;background-size: 100% 100%;overflow-x: hidden;}
  	*{padding: 0; margin: 0; }
  	/*分数盘*/
  	.circle{width: 150px;height: 240px;margin: 0 auto; margin-bottom:20px;position: relative;top: 100px;}
@@ -75,10 +75,13 @@
 	.box-head>span{line-height: 80px; color: #fff;text-align: center; display: block;}
 	/*排行榜*/
 	#ranking{
-		width: 100%;
+		width: 300px;
 		height: 50px;
 		margin-bottom: 20px;
 		clear: both;
+		position: relative;
+		left: 50%;
+		margin-left: -183px;
 	}
 	#ranking>div:first-child{
 		float: left;
@@ -90,7 +93,7 @@
 
 	}
 	#ranking>div:last-child{
-		min-width:200px ;
+		min-width:120px ;
 		height: 50px;
 		float: left;
 		line-height: 50px;
@@ -100,10 +103,19 @@
 
 	}
 	/*文字结果*/
-	.textbg{width:300px;height:150px; background: url(../img/icon-13.png) no-repeat ; background-size: 100% 100%; position: absolute;top: 310px;left: 35px;}
+	.textbg{
+		width: 300px;
+    height: 150px;
+    background: url(../img/icon-13.png) no-repeat;
+    background-size: 100% 100%;
+    position: absolute;
+    /* top: 310px; */
+    left: 50%;
+    margin-left: -150px;
+	}
 	h2{text-align: center;}
 	.text-margin{margin: 10px 0;}
-	h1,h3,h4,h6{color: #fff; font-weight:100;text-align: center;margin-top: 5px;letter-spacing: 2px;}
+	h1,h3,h4,h6{color: #fff; font-weight:100;text-align: center;padding-top: 19px;letter-spacing: 2px;}
 	.Tab{width:100%;height: 45px;background: #123C48; color: #fff; text-align: center;}
 	.Tab>li{float: left; list-style: none;height:100%;width:50%;line-height: 45px; letter-spacing: 2px;}
 	/*专家建议*/
