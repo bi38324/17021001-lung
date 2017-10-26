@@ -1,637 +1,686 @@
-{% block diligent_script %}
-    <meta charset="utf-8">
+<!DOCTYPE html>
+<html>
+<head>
+	<meta charset="utf-8">
 	<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />
 	<meta name="format-detection" content="telphone=no, email=no" />
 	<meta http-equiv="Access-Control-Allow-Origin" content="*">
 	<meta name="viewport" content="width=375,maximum-scale=4,initial-scale=1.0,user-scalable=no">
-    <link rel="stylesheet" href="${url_for('static', filename='css/progress.css')}">
+	<title></title>
+	<link rel="stylesheet" href="${url_for('static', filename='css/progress.css')}">
     <link rel="stylesheet" href="${url_for('static', filename='css/canvas.css')}">
-    <script src="${url_for('static', filename='js/jquery-1.8.3.min.js')}"></script>
-    <script src="${url_for('static', filename='js/vue.js')}"></script>
-    <script src="${url_for('static', filename='js/layer-master/src/layer.js')}"></script>
-{% endblock %}
-
-{% block body %}
-    <div id="content">
+	<script src="${url_for('static', filename='js/jquery-1.8.3.min.js')}"></script>
+	<script src="${url_for('static', filename='js/layer-master/build/layer.js')}"></script>
+	<script src="${url_for('static', filename='js/vue.js')}" type="text/javascript" charset="utf-8"></script>
+	<script src="https://cdn.jsdelivr.net/npm/vue-resource@1.3.4"></script>
+{#    <script src="${url_for('static', filename='js/vconsole.min.js')}" type="text/javascript" charset="utf-8"></script>#}
+</head>
+<body>
+	<div id="content">
 		<nav>
 			<div>ID:</div>
 			<div>分享</div>
 		</nav>
-		<div class="box-head ls2 fs18" style="top: 20px;"><span>您的患病指数</span></div>
+		<div class="box-head ls2 fs18" style="top: 20px;"><span>患病指数</span></div>
 		<div class="circle">
 			<canvas id="canvas_1" width="150" height="150"></canvas>
 			<canvas id="canvas_2" width="150" height="150"></canvas>
-			<div class="hide">高风险</div>
+			<div class="hide">{{ check_information.grade }}</div>
 		</div>
 		<div id="ranking">
 			<div></div>
-			<div>排名第<h2 style="display: inline-block;">2222</h2>名</div>
+			<div>排名第<h2 style="display: inline-block;">{{ check_information.ranking }}</h2>名</div>
 		</div>
-		<div class="textbg"></div>
-		<h4>你打败了26%的人群，获得</h4>
-		<h2 class="color1 ls2 text-margin">健康达人</h2>
-		<h6 style="width: 260px; margin: 0 auto; color: #3ACFD6; line-height: 15px;">您是健康达人，还不错哦，已经达到平均水平了，再接再厉，对自己好点</h6>
-		<p style="padding:45px 0 20px; color:#fff; text-align: center; font-size: 12px; color:#2EA2AB ;">> 关联基因数据获得定制化防癌方案，点击了解基因检测  <</p>
-		<ul class="Tab">
-			<li>关联基因报告</li>
-			<li class="bg2">购买基因数据</li>
-		</ul>
-		<!-- 登录注册 -->
-		<div class="onload">
-			 <p class="title-sub2">请输入手机号保存数据获取基因数据</p>
-			 <div class="form-wrapper">
-					<input class="input-size" type="text"  placeholder="请输入手机号" value=""><br>
-					<input class="input-size1" type="text" placeholder="请输入验证码" value=""><input class="input-size2" type="submit" value="验证码">
-			 </div>
-		</div>
-		<!-- 健康风险曲线 -->
-		<div id="app">
-			<div class="box-head-title ls2 fs18 fc2" style="text-align: center;line-height:80px;">健康风险曲线</div>
-			<p class="title-sub">调整生活方式,预知风险变化</p>
-			<img class="cancerImg" src="${url_for('static', filename='img/zxzx.png')}"/>
-			<div class="title-sub-content" @click="jieShi()">
-				<span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="${url_for('static', filename='img/icon1.png')}" style="width:18px;vertical-align: middle;"></span>
-			</div>
-			<div class="progress-box">
-				<div class="progress-wrapper">
-					<div v-for="(categoryName,index) in categoryNames" class="progress-content">
-						<span class="title fc1">
-{#                            {{categoryName.name}}#}
-                        </span>
-						<span id="grade" class="fc1" :ref="'grade'+index">
-{#                            {{categoryName.num}}#}
-                        </span>
-						<div class="scale_panel">
-							<div class="scale" id="bar"  :ref="'bar'+index" @touchstart="move(index)">
-								<div id="bg" :ref="'bg'+index"></div>
-								<span id="btn" class="circle_move" :ref="'btn'+index"></span>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<ul class="Tab">
-				<li>改变健康曲线</li>
-				<li class="bg2">恢复默认曲线</li>
-			</ul>
-		</div>
-		<!--基因科学防癌  恶性肿瘤-->
-		<div id="cancer">
-			<div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">基因科学防癌</div>
-			<p class="ls2 fs12 color1" style="padding-top:70px;">有关基因的个性化防癌方案</p>
-			<!--<div id="cancerpicbox"></div>-->
-			<div class="cancerpicbox" @click = "selectp($event)" v-for="(Cdata,index) in candata" :class="{'new_downlist':index==0}">
-				<div class="color1 list_headover fs13" style="height: 100%;">
-{#					{{Cdata.name}}#}
-					<div class="square" :class="{'square_rotate':index==0}"></div>
-					<img class="cancerImg" src="${url_for('static', filename='img/zxzx.png')}"/>
-				</div>
-			</div>
+        <div class="text-wrapper">
+            <div class="textbg"></div>
+            <h6>你打败了{{ check_information.percent }}的人群，获得</h6>
+            <h2 class="color1 ls2 text-margin">{{ check_information.chengHao }}</h2>
+            <h6 style="width: 260px; margin: 0 auto; color: #3ACFD6; line-height: 15px;">{{ check_information.simple_introduce }}</h6>
+            <p style="padding:45px 0 20px; color:#fff; text-align: center; font-size: 12px; color:#2EA2AB ;">> 关联基因数据获得定制化防癌方案，点击了解基因检测</p>
+        </div>
+        <!-- 未登录 -->
+        <div v-if="unloading">
+             <!-- tab栏部分 -->
+            <div>
+                <ul class="Tab">
+                    <li @click="loading">关联基因报告</li>
+                    <li class="bg2">购买基因数据</li>
+                </ul>
+            </div>
+            <!-- 登录注册 -->
+            <div  class="loading">
+                 <p class="title-sub2">请输入手机号保存数据获取基因数据</p>
+                 <div class="form-wrapper">
+                        <input class="input-size" type="text"  placeholder="请输入手机号"  id="phoneNum"><br>
+                        <input class="input-size1" type="text" placeholder="请输入验证码"  id="confirNum"><button class="input-size2" @click="submitInformation" value="" id="btn">验证码</button><br>
+                        <div id="loading">登录</div>
+                 </div>
+            </div>
+            <!-- 健康风险曲线 -->
+            <div id="app">
+                <div class="box-head-title ls2 fs18 fc2" style="text-align: center;line-height:80px;">健康风险曲线</div>
+                <p class="title-sub">调整生活方式,预知风险变化</p>
+                <img class="cancerImg" :src="'/static/'+image_age" />
+                <div class="title-sub-content" @click="jieShi()">
+                    <span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="${url_for('static', filename='img/icon1.png')}" style="width:18px;vertical-align: middle;"></span>
+                </div>
+                <div class="progress-box">
+                    <div class="progress-wrapper">
+                        <div v-for="(categoryName,index) in categoryNames" class="progress-content">
+                            <span class="title fc1">{{ categoryName.name }}</span>
+                            <span id="grade" class="fc1" :ref="'grade'+index">{{ categoryName.num }}</span>
+                            <div id="barbox">
+                                <div class="scale" id="bar"  :ref="'bar'+index" @touchstart="move(index)">
+                                    <div id="bg" :ref="'bg'+index"></div>
+                                    <span id="btn" class="circle_move" :ref="'btn'+index"></span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <ul class="Tab">
+                    <li @click="changeResult">改变健康曲线</li>
+                    <li class="bg2" @click="recover">恢复默认曲线</li>
+                </ul>
+            </div>
 
-		</div>
+        </div>
+        <!-- 登录 -->
+        <div v-if="!unloading">
+            <!-- tab栏部分 -->
+                <!-- 新用户 -->
+                <div v-if="!user">
+                    <ul class="Tab">
+                        <li @click="new_Information">关联基因报告</li>
+                        <li class="bg2">购买基因数据</li>
+                    </ul>
+                </div>
+                <!-- 老用户 -->
+                <div v-if="user">
+                    <ul class="Tab">
+                        <li onclick="old_Information()">关联基因报告</li>
+                        <li class="bg2">购买基因数据</li>
+                    </ul>
+                    <!--老用户关联的报告-->
+                    <div class="page-width">
+                        <div id="report" style="display:none;" class="wenxian_content">
+                            <div class="reportList" v-for="(reportData,index) in reportsCode" >
+                                <span>{{ reportData.examineeName }}</span><span style="padding: 10px 10px 10px 50px">编码：</span><span>{{ reportData.code }}</span>
+                            </div>
+                            <div class="notice">
+                                报告一旦绑定不可更改，请仔细核对姓名
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- 健康风险曲线 -->
+                <div id="app">
+                    <div class="box-head-title ls2 fs18 fc2" style="text-align: center;line-height:80px;">健康风险曲线</div>
+                    <p class="title-sub">调整生活方式,预知风险变化</p>
+                    <img class="cancerImg" :src="'/static/'+image_age">
+                    <div class="title-sub-content" @click="jieShi()">
+                        <span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="${url_for('static', filename='img/icon1.png')}" style="width:18px;vertical-align: middle;"></span>
+                    </div>
+                    <div class="progress-box">
+                        <div class="progress-wrapper">
+                            <div v-for="(categoryName,index) in categoryNames" class="progress-content" >
+                                <span class="title fc1">{{ categoryName.name }}</span>
+                                <span id="grade" class="fc1" :ref="'grade'+index">{{ categoryName.num }}</span>
+                                <div id="barbox">
+                                    <div class="scale" id="bar"  :ref="'bar'+index" @touchstart="move(index)">
+                                        <div id="bg" :ref="'bg'+index"></div>
+                                        <span id="btn" class="circle_move" :ref="'btn'+index"></span>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <ul class="Tab">
+                        <li @click="changeResult">改变健康曲线</li>
+                        <li class="bg2" @click="recover">恢复默认曲线</li>
+                    </ul>
+                </div>
+                <!--基因科学防癌  恶性肿瘤-->
+                <!--只有老用户才有该数据-->
+                <div v-if="user">
+                        <div id="cancer">
+                            <div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">基因科学防癌</div>
+                            <p class="ls2 fs12 color1" style="padding-top:70px;">有关基因的个性化防癌方案</p>
+                            <!--<div id="cancerpicbox"></div>-->
+                            <div class="cancerpicbox" @click ="selectp($event)" v-for="(value,index) in image" :class="{'new_downlist':index==0}">
+                                <div class="color1 list_headover fs13" style="height: 100%;">
+                                    {{value.title}}
+                                    <div class="square" :class="{'square_rotate':index==0}"></div>
+                                    <img class="cancerImg" :src="'/static/'+value.url"/>
+                                </div>
+                            </div>
+                        </div>
+                </div>
+                <div  id="specialist">
+                    <div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">专家建议</div>
+                    <div class="spenbox ">
+                        <!--壹博士怎么说部分内容-->
+                        <div class="manybox">
+                            <p class="one_list"><img src="${url_for('static', filename='img/11-17.png')}" alt="" /><em class="ls2 fs14">壹博士怎么说？</em></p>
+                            <div class="one_ment ls2 color2">{{check_information.introduce}}</div>
+                        </div>
+                        <!--重点建议部分内容-->
+                        <div class="manybox">
+                            <p class="one_list"><img src="${url_for('static', filename='img/11-16.png')}" alt="" /><em class="ls2 fs14">重点建议</em></p>
+                            <div v-for="(important,index) in important" class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">
+                                <p>
+                                    <span>
+                                        {{index + 1}}.
+                                    </span><span>
+                                    {{important.title}}
+                                </span>
+                                </p>
+                                <p class="one_ment_list color2 fs12">
+                                    {{important.value}}
+                                </p>
+                            </div>
+                        </div>
+                        <!--养生指南部分内容-->
+                        <div class="manybox">
+                            <p class="one_list fs14"><img src="${url_for('static', filename='img/11-15.png')}" alt="" /><em class="ls2">养生指南</em></p>
+                            <div class="one_ment_downlist" v-for="(data,index) in healthy" @click = "selectp($event)" :class="{'new_downlist':index==0}">
+                                <div class="color1 list_headover fs13" >
+                                    {{data.title}}
+                                    <div class="square" :class="{'square_rotate':index==0}"></div>
+                                </div>
+                                <p class="padT5 color2 fs12">
+                                    {{data.value}}
+                                </p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
-		<!--后方内容 专家建议-->
-		<div id="specialist">
-			<div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">专家建议</div>
-			<div class="spenbox ">
-				<div class="manybox">
-					<p class="one_list"><img src="${url_for('static', filename='img/11-17.png')}" /><em class="ls2 fs14">壹博士怎么说？</em></p>
-					<div class="one_ment ls2 color2">恭喜你获得了"健康达人"，你的肺癌患病指数是55，排名第2222名，打败了26%的人群，风险正常。随着年龄增加，肺癌风险也会有一段上升区间，请密切关注健康风险曲线，参照专家建议，定期体检，小心预防哦~~</div>
-				</div>
-			<div class="manybox">
-				<p class="one_list"><img src="${url_for('static', filename='img/11-16.png')}" /><em class="ls2 fs14">重点建议</em></p>
-				<div class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">1.吸烟习惯减少<p class="one_ment_list color2 fs12">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p></div>
-				<div class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">1.吸烟习惯减少<p class="one_ment_list color2 fs12">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p><p class="one_ment_list color2">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p></div>
-			</div>
-				<div class="manybox">
-					<p class="one_list fs14"><img src="${url_for('static', filename='img/11-15.png')}}"/><em class="ls2">养生指南</em></p>
-					<div class="one_ment_downlist"v-for="(data,index) in data" @click = "selectp($event)" :class="{'new_downlist':index==0}">
-						<div class="color1 list_headover fs13" >
-{#                            {{data.name}}#}
-							<div class="square" :class="{'square_rotate':index==0}"></div>
-						</div>
-						<p class="padT5 color2 fs12">
-{#                            {{data.vtext}}#}
-                        </p>
-					</div>
-				</div>
-			</div>
-		</div>
-	</div>
-{% endblock %}
+        </div>
+
+        <div class="footer">
+            <div class="imgWrapper">
+                 <img src="${url_for('static', filename='img/icon2.png')}" style="width:140px"/>
+            </div>
+            <p class="footer-text1">扫一扫关注公众号</p>
+            <p class="footer-text1">了解防癌资讯</p>
+            <p class="footer-text2">＞有机会赢取新人大礼包＜</p>
+        </div>
+    </div>
+	<script>
+	// 判断是移动还是pc
+	function IsPC() {
+	    var userAgentInfo = navigator.userAgent,
+	        Agents = ["Android", "iPhone",
+	                "SymbianOS", "Windows Phone",
+	                "iPad", "iPod"],
+	        flag = true;
+	    for (var v = 0; v < Agents.length; v++) {
+	        if (userAgentInfo.indexOf(Agents[v]) > 0) {
+
+	            flag = false;
+	            break;
+	        }
+	    }
+	    return flag;
+
+	}
+	//PC端和移动端方法倍数的判断
+	var scale = 1;
+	if( !IsPC() ){
+	   scale = 4;
+	}
+
+	var vm = new Vue({
+		el: '#content',
+		data:{
+			healthy:'',//养生指南
+			isA:false,
+			results:'',//接收请求的数据
+			check_information:'',
+			image:'',
+            image_age:"",
+			important:'',
+            fig_show:'',//用户项目检测风险等级
+            init_fig_show:'',//用户项目检测风险等级初始值
+			number:'',//用户得分
+			showNum: [],//存储每个项目的级别
+			unloading:true,//true：没有登录  false:登录
+            code:"",//存放用户信息
+			user:false,//true:老用户 false:新用户
+            reportsCode:'',//关联用户信息
+            barX:"",//包裹滑块的父盒子距离视窗的距离
+			candata: [{
+				name:"吸烟影响指数"
+			},{
+				name:"BMl影响指数"
+			},{
+				name:"职业影响指数"
+			},{
+				name:"运动影响指数"
+			},{
+				name:"PM2.5影响指数"
+			},{
+				name:"非健康饮食影响指数"
+			},{
+				name:"健康饮食影响指数"
+			}],
+			step: [{ value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0},
+				   { value: 0,  afterMove: 0, symbol:0}
+				  ],        //初始化每个滚轮步长值
+		    categoryNames: [
+				{
+					name: "吸烟",
+					num: 0
+
+				}, {
+					name: "BMI",
+					num: 0
+				},
+				{
+					name: "职业",
+					num: 0
+				},
+				{
+					name: "运动",
+					num: 0
+				},
+				{
+					name: "PM2.5",
+					num: 0
+				},
+				{
+					name: "非健康饮食",
+					num: 0
+				},
+				{
+					name: "健康饮食",
+					num: 0
+				}]
+		},
+		mounted:function(){
+			this.preview();
+			console.log(this);
+			var that =this;
+			Vue.nextTick(function () {
+			    console.log(that);
+                that.drawCircle();
+             })
+		},
+
+		methods:{
+			preview:function(){
+                this.results = JSON.parse(window.localStorage.obj);
+                this.important = this.results.important;
+				this.healthy = this.results.healthy;//养生指南部分
+                this.image = this.results.image;
+				this.check_information = this.results.check_information;
+				this.number = this.check_information.zhiShu;//获取用户得分
+                this.image_age = this.results.image_age[0].url;//获取图片URL
+                this.values = JSON.parse(window.localStorage.val);
+                this.val = this.values.val;
+                console.log(this.val);
+                //判断是否登录
+                if(window.localStorage.token==''){
+                   console.log("未登录");
+                   this.unloading = true;//token为空表示没有登录
+				}
+                else{
+                   console.log("已经登录");
+                   this.unloading = false;//token有值表示登录
+                   this.reportsCode =  JSON.parse(window.localStorage.code);//获取用户信息
+                   if(this.reportsCode[0].user=="old"){
+                       this.user = true;//老用户
+                   }
+                   else if(this.reportsCode[0].user=="new"){
+                       this.user = false;//新用户
+                   }
+                   console.log(this.reportsCode);
+                }
+                this.barX = document.getElementById("barbox").offsetLeft;//计算包裹滑块的父盒子距离视窗的距离
+                this.fig_show =  this.results.fig_show ;
+                this.init_fig_show = this.results.fig_show;//存取默认的fig_show数据
+                console.log("用户初始信息"+this.init_fig_show);
+                //接收用户检测项目风险等级
+                for(var i = 0 ;i< this.fig_show.length;i++){
+                    this.categoryNames[i].num = this.fig_show[i];
+                    var btn = this.$refs['btn' + i][0];//获取滚轮;
+                    var bg =  this.$refs['bg' + i][0];//获取进度条dom;
+                    var bar = this.$refs['bar' + i][0];//获取进度条容器dom;
+				    var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度
+                    var btnWidth = btn.offsetWidth;//滚轮的宽度
+                    //计算滚轮和精度条初始位置
+                    //用户风险等级若为0，则不减去滚轮的宽度
+                    if(this.categoryNames[i].num==0){
+                        console.log("用户等级为0");
+                        bg.style.width =((this.categoryNames[i].num/5)*barWidth+btnWidth)+ 'px';
+                        btn.style.left = (this.categoryNames[i].num/5)*barWidth+ 'px';
+                    }
+                    else{
+                        bg.style.width = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                        btn.style.left = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                    }
+                    console.log(this.categoryNames[i].num);
+                }
+
+			},
+			selectp:function(event){
+				event.currentTarget.classList.toggle("new_downlist");
+				event.currentTarget.children[0].children[0].classList.toggle("square_rotate");
+			},
+			//风险曲线部分代码
+			move:function (index) {
+				var that = this;//变量替换
+				var btn = that.$refs['btn' + index][0];//获取滚轮;
+				var grade = that.$refs['grade' + index][0];//获取项目等级dom;
+				var bg = that.$refs['bg' + index][0];//获取进度条dom;
+				var bar = that.$refs['bar' + index][0];//获取进度条容器dom;
+				var btnWidth = btn.offsetWidth;//滚轮的宽度
+				var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度
+				var max = barWidth - btnWidth;//滑块滑动的最大距离
+				btn.ontouchmove = function (event) {
+                    that.step[index].afterMove = event.changedTouches[0].pageX;//获取滑动时的坐标#;
+					that.step[index].value = that.step[index].afterMove - that.barX;//
+					if (that.step[index].value <= btnWidth) {
+						that.step[index].value = 0;//坐标差小于滑块的宽度，不移动
+					}
+					else if (that.step[index].value >= max) {
+						that.step[index].value = max;
+					}
+					else {
+						//不做任何处理
+					}
+					btn.style.left = that.step[index].value + 'px';
+					bg.style.width = that.step[index].value + 'px';
+					that.showNum[index] = Math.round(((that.step[index].value) / barWidth) * 5);
+					that.categoryNames[index].num = that.showNum[index];
+				}
+				//手指移开,停止移动
+				btn.ontouchend = function (event) {
+					btn.ontouchmove = null;
+				}
+			},
+            //手机登录验证
+            submitInformation:function(){
+			    var phoneNum = document.getElementById("phoneNum");//获取手机号码dom
+                var confirNum = document.getElementById("confirNum");//获取验证码dom
+                var btn = document.getElementById("btn");//验证码按钮
+                var phoneReg = /^(\+86|0086)?\s*1[34578]\d{9}$/;//定义手机号码规则
+                var number = phoneNum.value;//获取手机号码
+                if(!phoneReg.test(number)){
+                    alert("对不起你输入的手机号码不对");
+                }
+                else{
+                    btn.disabled = true;  //当点击后倒计时时候不能点击此按钮
+                    var time = 60;  //倒计时5秒
+                    var timer = setInterval(fun1, 1000);  //设置定时器
+                    function fun1() {
+                        time--;
+                        if (time >= 0) {
+                             btn.innerHTML = time + "s后重新发送";
+                        }
+                        else {
+                             btn.innerHTML = "重新发送验证码";
+                             btn.disabled = false;  //倒计时结束能够重新点击发送的按钮
+                             clearTimeout(timer);  //清除定时器
+                             time = 60;  //设置循环重新开始条件
+                        }
+                    }
+                    this.$http.post("/api/v1/account/authcode/phone/",{phone:number}).then(
+                       function (res) {
+                          // 处理成功的结果
+                        console.log("手机号码发送成功");
+                        console.log(res);
+                        var loading = document.getElementById("loading");//获取登录按钮
+                        var that = this;//变量替换
+                        loading.onclick=function(){
+                            var phoneCode = confirNum.value;//获取用户填写的验证码
+                            console.log("打印用户验证码"+phoneCode);
+                            that.$http.post("/api/v1/account/login/phone/",{phone:number,authcode:phoneCode,val:this.val}).then(
+                            function(response){
+                               console.log("验证码通过");
+                               that.unloading = false;//用户登录状态
+
+                                that.fig_show =  that.results.fig_show ;
+                                //接收用户检测项目风险等级
+                                for(var i = 0 ;i< that.fig_show.length;i++){
+                                    that.categoryNames[i].num = that.fig_show[i];
+                                    var btn = that.$refs['btn' + i][0];//获取滚轮;
+                                    var bg =  that.$refs['bg' + i][0];//获取进度条dom;
+                                    var bar = that.$refs['bar' + 0][0];//获取进度条容器dom;
+                                    var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度
+                                    var btnWidth = btn.offsetWidth;//滚轮的宽度
+                                    //计算滚轮和精度条初始位置
+                                    //用户风险等级若为0，则不减去滚轮的宽度
+                                    if(that.categoryNames[i].num==0){
+                                        console.log("用户等级为0");
+                                        bg.style.width =((that.categoryNames[i].num/5)*barWidth+btnWidth)+ 'px';
+                                        btn.style.left = (that.categoryNames[i].num/5)*barWidth+ 'px';
+                                    }
+                                    else{
+                                        bg.style.width = ((that.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                                        btn.style.left = ((that.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                                    }
+                                    console.log(that.categoryNames[i].num);
+                                }
+
+                               var userID = response.body.accessToken;
+                                   //提交userID判断新用户与老用户
+                                   that.$http.post("/api/v1/sample/list/",{accessToken:userID}).then(
+                                   function(response) {
+                                      console.log("获取数据成功");
+                                      console.log(response);
+                                       //新用户
+                                      if(response.body[0].user=="new"){
+                                            that.user = false;//新用户状态
+                                      }
+                                       //老用户
+                                      else if(response.body[0].user=="old"){
+                                            that.user = true;//老用户状态
+                                            that.reportsCode = response.body;//老用户信息
+                                      }
+                                  });
+                            },function(response){
+                               console.log("验证码失败");
+                                });
+                        }
+                     },function (res) {
+                        console.log("手机号码发送失败");
+                        // 处理失败的结果
+                    });
+                }
 
 
-{% block lazy_script%}
-    <script src="${url_for('static', filename='js/myCanvas.js')}"></script>
-{% endblock %}
+            },
+			//canvas画图
+			drawCircle:function(){
+				function inte(percent) {
+					var canvas_1 = document.querySelector('#canvas_1');
+					var canvas_2 = document.querySelector('#canvas_2');
+					var ctx_1 = canvas_1.getContext('2d');
+					var ctx_2 = canvas_2.getContext('2d');
+					//画底部的灰色圆环
+					ctx_1.beginPath();
+					canvas_1.width = canvas_1.width*scale;
+					canvas_1.height = canvas_1.height*scale;
+					ctx_1.lineWidth = 10*scale;
+					ctx_1.arc(canvas_1.width/ 2 , canvas_1.height / 2, canvas_1.width/ 2 - ctx_1.lineWidth / 2 , 0, Math.PI * 2, false);
+					ctx_1.strokeStyle = "#EEE";
+					ctx_1.closePath();
+					ctx_1.stroke();
+					if (percent < 0 || percent > 100) {
+						throw new Error('percent must be between 0 and 100');
+						return
+					}
+					var angle = 0;
+					var timer;
+					canvas_2.width = canvas_2.width*scale;
+					canvas_2.height = canvas_2.height*scale;
+					(function draw() {
+						timer = setTimeout(draw,10);
+						// 在给顶的矩形内清除制定的像素
+						ctx_2.clearRect(0, 0, canvas_2.width, canvas_2.height)
+						//百分比圆环
+						ctx_2.beginPath();
+						ctx_2.lineCap="round";
+						ctx_2.lineWidth = 10*scale;
+						ctx_2.arc(canvas_2.width/ 2, canvas_2.height/ 2, canvas_2.width/ 2 - ctx_2.lineWidth / 2, 0, angle * Math.PI / 180, false);
+						angle++;
+						var percentAge = parseInt((angle / 360) * 100)
+						if (angle > (percent / 100 * 360)) {
+							percentAge = percent
+							clearTimeout(timer);
+						};
+						ctx_2.strokeStyle = "#3FE2EB";
+						ctx_2.stroke();
+						ctx_2.closePath();
+						ctx_2.save();
+						ctx_2.beginPath();
+						ctx_2.rotate(90 * Math.PI / 180)
+						ctx_2.font = ' 180px Ruler';
+						ctx_2.fillStyle = '#3FE2EA';
+						var text = percentAge;
+						ctx_2.fillText(text, 220, -300);
+						ctx_2.closePath();
+						ctx_2.restore();
+					})()
+				}
+				// console.log(this.number);
+				window.onload = inte(this.number);
+			},
+            jieShi:function(){
+				layer.open({
+				type: 1,
+				title: false,
+				skin: 'layui-layer-rim', //加上边框
+				area: ['330px', '560px'], //宽高
+				content: '<div style="color:#25384c ;font-size:14px;text-align:left; letter-spacing:2px;margin:0 auto; padding:15px 10px 10px 15px;line-height:22px;border-bottom 1px solid #3fc5e5;"><div><b>风险模型包括8个生活习惯以及环境因素位点：</b></div><div><b>1.吸烟指数：</b>吸烟指数=每日吸烟根数*总吸烟年数，分为6档，0档为0，5档为401+，贡献率30% </div><div font-size:14px ><b>2.BMI指数：</b>分为6档，0档为<18.5，5档为40+，贡献率5% </div><div><b>3.职业影响：</b>分为6档，0档为工作环境无污染，5档为毒气工作环境，贡献率10%</div><div><b>4.运动：</b>分为6档，0档为每日运动0分钟，5档为160分钟+，贡献率5%</div><div><b>5.PM2.5指数：</b>分为6档，0档为PM2.5指数0，5档为2500+，贡献率10%</div><div><b>6.健康饮食：</b>分为6档，0档为从不摄取此类食物，5档为大量摄取，贡献率5%</div><div><b>7.非健康饮食：</b>分为6档，0档为从不摄取此类食物，5档为大量摄取，贡献率5%</div><div><b>8.遗传病史：</b>分为2档，0档为无家族遗传史，5档为有家族遗传史，贡献率15% 。此外，基因贡献率为15% 。</div><div><b></b>健康风险曲线模型目前仅涵盖20-80岁的风险变化，因为20岁以下风险较小，80岁以上风险也趋于稳定。参考文献：Cancer Statistics in China, 2015。</div></div>'
+				});
+			},
+            //未登录弹窗提醒
+            loading:function(){
+                layer.open({
+						title: '提示',
+						type: 1,
+						area: ['295px', '170px'], //此处设置宽高
+						skin: 'demo-class', //样式类名
+						closeBtn: 0, //不显示关闭按钮
+						shade: [0.8, '#a0a0a0'],
+						btn: '知道了',
+						btnAlign: 'c',
+						shadeClose: false,
+						content: '<div style="color:#25384c ;font-size:14px;text-align:left; letter-spacing:2px;margin:0 auto; padding:15px 10px 10px 15px;line-height:22px;border-bottom 1px solid #3fc5e5;"><div style="text-align:center"></div><div style="color:#666666;font-size:16px">对不起，若想查看更多信息，请您先登录</div></div>'
+					});
+            },
+			//改变健康曲线
+			changeResult:function(){
+                console.log(this.categoryNames);
+                var fig_data = this.results.fig_data;
+                var fig_index = this.results.fig_index;
+                var fig_show=[];
+                for(var i=0;i<this.categoryNames.length;i++){
+                    fig_show[i] = this.categoryNames[i].num;
+                }
+                console.log(fig_show);
+                this.$http.post("/api/v1/algorithm/lung-cancer-2C/",{fig_data:fig_data,fig_index:fig_index,fig_show:fig_show}).then(
+                    function (res) {
+                        console.log("改变健康曲线成功");
+                        console.log(JSON.parse(res));
+                    },function (res){
+                      console.log("改变健康曲线失败")
+                    });
 
+			},
+            //恢复默认曲线
+            recover:function(){
+                 //恢复用户检测项目风险初始等级
+                for(var i = 0 ;i< this.init_fig_show.length;i++){
+                    this.categoryNames[i].num = this.init_fig_show[i];
+                    var btn = this.$refs['btn' + i][0];//获取滚轮;
+                    var bg =  this.$refs['bg' + i][0];//获取进度条dom;
+                    var bar = this.$refs['bar' + i][0];//获取进度条容器dom;
+				    var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度
+                    var btnWidth = btn.offsetWidth;//滚轮的宽度
+                    //计算滚轮和精度条初始位置
+                    //用户风险等级若为0，则不减去滚轮的宽度
+                    if(this.categoryNames[i].num==0){
+                        console.log("用户等级为0");
+                        bg.style.width =((this.categoryNames[i].num/5)*barWidth+btnWidth)+ 'px';
+                        btn.style.left = (this.categoryNames[i].num/5)*barWidth+ 'px';
+                    }
+                    else{
+                        bg.style.width = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                        btn.style.left = ((this.categoryNames[i].num/5)*barWidth-btnWidth )+ 'px';
+                    }
+                    console.log(this.categoryNames[i].num);
+                }
+            },
+			// 新用户弹窗
+			new_Information:function(){
+				layer.open({
+						title: '提示',
+						type: 1,
+						area: ['295px', '150px'], //此处设置宽高
+						skin: 'demo-class', //样式类名
+						closeBtn: 0, //不显示关闭按钮
+						shade: [0.8, '#a0a0a0'],
+						btn: '知道了',
+						btnAlign: 'c',
+						shadeClose: false,
+						content: '<div style="color:#25384c ;font-size:14px;text-align:left; letter-spacing:2px;margin:0 auto; padding:15px 10px 10px 15px;line-height:22px;border-bottom 1px solid #3fc5e5;"><div style="text-align:center"></div><div style="color:#666666;text-align:center;font-size:16px">对不起检测不到你的基因数据</div></div>'
 
+					});
+			},
 
+		}
+	});
 
+	/*********解决滑动侧边栏，底部页面跟随一起滑动********/
+	var $body = $('body');
+	var scrollTop;
+	function lockBody() {
+		scrollTop = $body.scrollTop();//body设置为fixed之后会飘到顶部，所以要动态计算当前用户所在高度
+		$body.css({
+			'overflow': 'hidden',
+			'position': 'fixed',
+			'top': scrollTop * -1
+		});
+	}
+	function unLockBody() {
+		$body.css({
+			'overflow': 'auto',
+			'position': 'static'
+		});
+		// 恢复原滚动位置
+		window.scrollTo(0, scrollTop);
+	}
 
-
-
-
-
-
-
-
-{#<!DOCTYPE html>#}
-{#<html>#}
-{#<head>#}
-{#	<meta charset="utf-8">#}
-{#	<meta http-equiv="x-ua-compatible" content="IE=edge,chrome=1" />#}
-{#	<meta name="format-detection" content="telphone=no, email=no" />#}
-{#	<meta http-equiv="Access-Control-Allow-Origin" content="*">#}
-{#	<meta name="viewport" content="width=375,maximum-scale=4,initial-scale=1.0,user-scalable=no">#}
-{#	<title>canvas圆环进度</title>#}
-{#	<link rel="stylesheet" href="css/progress.css">#}
-{#	<script src="js/jquery-1.8.3.min.js"></script>#}
-{#	<script src="js/layer-master/build/layer.js"></script>#}
-{#	<script src="js/vue.js" type="text/javascript" charset="utf-8"></script>#}
-{#	<style>#}
-{#	* {#}
-{#		margin: 0;#}
-{#		padding: 0;#}
-{#		-webkit-tap-highlight-color: rgba(0, 0, 0, 0);#}
-{#		box-sizing: content-box;#}
-{#		-moz-box-sizing: content-box;#}
-{#		/* Firefox */#}
-{#		-webkit-box-sizing: content-box;#}
-{#		/* Safari */#}
-{#	}#}
-{#	body {#}
-{#	-webkit-overflow-scrolling: touch;#}
-{#	font-family: "微软雅黑";#}
-{#	color: #444444;#}
-{#	margin: 0 auto;#}
-{#	margin: 0px;#}
-{#	padding: 0px;#}
-{#	overflow-x: hidden;#}
-{##}
-{#	margin:0 auto;#}
-{#	}#}
-{#	@media all and (orientation: landscape) {#}
-{#		/*横屏*/#}
-{#		body {#}
-{#			width: 100%;#}
-{#		}#}
-{#	}#}
-{#	#}
-{#	@media all and (orientation: portrait) {#}
-{#		body {#}
-{#			width: 100%;#}
-{#		}#}
-{#		/*竖屏*/#}
-{#	}#}
-{#	#content{width:100%;background:url(img/壹基因健康智能检测-3.jpg) no-repeat;background-size: 100% 100%;}#}
-{# 	*{padding: 0; margin: 0; }#}
-{# 	/*分数盘*/#}
-{# 	.circle{width: 150px;height: 240px;margin: 0 auto; margin-bottom:20px;position: relative;top: 100px;}#}
-{# 	canvas{width:100%;display: block;margin: 0;position: absolute;background:transparent;left: 0;top: 0;}#}
-{# 	#canvas_1{z-index: 2;}#}
-{# 	#canvas_2{z-index: 3; background: transparent;transform:rotate(-90deg); }#}
-{# 	.hide{width:100px;color:#3FE2EA;position:relative; z-index:2; top:90px;left:28px;text-align: center;letter-spacing: 3px;}  #}
-{# 	@font-face {  #}
-{#	    /* font-properties */  #}
-{#	    font-family: Ruler;  #}
-{#        src:/*url('font/DS-DIGI.woff'),    */#}
-{#		    url('font/DS-DIGI.TTF'),  #}
-{#		    url('font/DS-DIGI.TTF.eot'); /* IE9 */  #}
-{#	}#}
-{#	/*页面样式*/#}
-{#	.color1{color: #3FE2E9;}#}
-{#	.color2{color: #B4C2C6;}#}
-{#	/*tab选中颜色*/#}
-{#	.bg2{background:#207780;}#}
-{#	.ls2{letter-spacing: 2px;}#}
-{#	/*字体大小*/#}
-{#	.fs18{font-size: 18px;}#}
-{#	.fs14{font-size: 14px;}#}
-{#	.fs13{font-size: 13px;}#}
-{#	.fs12{font-size: 12px;}#}
-{#	/*间隔5px*/#}
-{#	.padT5{padding-top: 5px;}#}
-{#	/*头部*/#}
-{# 	nav{width:100%;height:30px; background: #113C46; color: #fff;opacity:0.6 ; position: fixed; top: 0;z-index: 99;}#}
-{# 	nav>div{line-height: 30px;  font-size: 14px;}#}
-{# 	nav>div:first-child{min-width: 200px;float: left;padding-left: 20px;}#}
-{#	nav>div:last-child{min-width:60px;float: right; text-align: center;}#}
-{#	/*box-head 带框标题*/#}
-{#	.box-head{#}
-{#		width:100%;#}
-{#		height:80px;#}
-{#		position: absolute;#}
-{#		background: url(img/icon-12.png) no-repeat center;#}
-{#		background-size:40% 50%;#}
-{#		}#}
-{#	.box-head>span{line-height: 80px; color: #fff;text-align: center; display: block;}#}
-{#	/*排行榜*/#}
-{#	#ranking{#}
-{#		width: 100%;#}
-{#		height: 50px;#}
-{#		margin-bottom: 20px;#}
-{#		clear: both;#}
-{#	}#}
-{#	#ranking>div:first-child{#}
-{#		float: left;#}
-{#		width: 14px;#}
-{#		height: 14px;#}
-{#		margin: 21px 10px 0 112px;#}
-{#		border-radius: 50%;#}
-{#		background: #3FE2E9;#}
-{#		#}
-{#	}#}
-{#	#ranking>div:last-child{#}
-{#		min-width:200px ;#}
-{#		height: 50px;#}
-{#		float: left;#}
-{#		line-height: 50px;#}
-{#		text-align: left;#}
-{#		color: #fff;#}
-{#		letter-spacing: 2px;#}
-{#		#}
-{#	}#}
-{#	/*文字结果*/#}
-{#	.textbg{width:300px;height:150px; background: url(img/icon-13.png) no-repeat ; background-size: 100% 100%; position: absolute;top: 310px;left: 35px;}#}
-{#	h2{text-align: center;}#}
-{#	.text-margin{margin: 10px 0;}#}
-{#	h1,h3,h4,h6{color: #fff; font-weight:100;text-align: center;margin-top: 5px;letter-spacing: 2px;}#}
-{#	.Tab{width:100%;height: 45px;background: #123C48; color: #fff; text-align: center;}#}
-{#	.Tab>li{float: left; list-style: none;height:100%;width:50%;line-height: 45px; letter-spacing: 2px;}#}
-{#	/*专家建议*/#}
-{#	#specialist{#}
-{#		width: 100%;#}
-{#		overflow: hidden;#}
-{#		color: #fff;#}
-{#	}#}
-{#	.spenbox{#}
-{#		width: 100%;#}
-{#		margin-top:90px ;#}
-{#		#}
-{#	}#}
-{#	.manybox{#}
-{#		border: 1px solid #3FE2E9;#}
-{#		margin: 0 15px 20px ;#}
-{#		padding:10px 20px; #}
-{#		background:rgba(63,226,235,0.2);#}
-{#		#}
-{#	}#}
-{#	.one_list{padding:5px;text-align: left;}#}
-{#	.one_list>img{width:16px;display: inline-block; vertical-align: middle;padding-right:5px ; margin-top: -4px; }#}
-{#	em{font-style: normal;color: #3FE2E9;font-weight: bold; font-size: 14px;}#}
-{#	/*内容*/#}
-{#	.one_ment{font-size: 13px; padding:0 0px 0 25px;}#}
-{#	.one_ment_list{/*text-indent:26px;*/ padding-top: 5px;}#}
-{#	.one_ment_downlist{height:20px;  overflow:hidden;font-size: 13px; margin-left: 42px; letter-spacing: 2px; margin-bottom:10px ;margin-top: 5px;transition:height 0.5s ease; }#}
-{#	.new_downlist{height:100%;}#}
-{#	#}
-{#	/*.square{width:16px;height: 16px; display: inline-block;  border-right: 24px solid #3FE2E9; border-bottom: 24px solid #3FE2E9;  position: absolute;top:0; right:15px; transform:rotate(45deg);}*/#}
-{#	.square{ #}
-{#		display: inline-block;  #}
-{#        border-right: 2px solid; #}
-{#        border-bottom: 2px solid;  #}
-{#        width: 8px; height: 8px;  #}
-{#        transform: rotate(-45deg); #}
-{#        transition: 1s ease; #}
-{#        position: absolute;#}
-{#        top:2px; #}
-{#        right: 20px;#}
-{#        #}
-{#        }#}
-{#     .square_rotate{display: inline-block;  #}
-{#        border-right: 2px solid; #}
-{#        border-bottom: 2px solid;  #}
-{#        width: 8px; height: 8px;  #}
-{#        transform: rotate(45deg); #}
-{#        transition: 0.5s ease; #}
-{#        position: absolute;#}
-{#        top:2px; #}
-{#        right: 20px;}#}
-{#	.list_headover{overflow: hidden; position: relative;}#}
-{#	/*-----  恶性肿瘤图片/内容  -----------------*/#}
-{#	#cancer{width:100%; color: #fff;}#}
-{#	#cancer>p{text-align: center;}#}
-{#	   /*肿瘤包裹的盒子*/#}
-{#	.cancerpicbox{height: 17px; margin: 10px 30px;} #}
-{#	.cancerImg{width: 100%;height: 100%;}#}
-{#	/*下拉的高度 因上倒下css的读取 所以放置在会后面*/ #}
-{#	.new_downlist{height:100%;}#}
-{#	</style>#}
-{#</head>#}
-{#<body>#}
-{#	<div id="content">#}
-{#		<nav>#}
-{#			<div>ID:</div>#}
-{#			<div>分享</div>#}
-{#		</nav>#}
-{#		<div class="box-head ls2 fs18" style="top: 20px;"><span>您的患病指数</span></div>#}
-{#		<div class="circle">#}
-{#			<canvas id="canvas_1" width="150" height="150"></canvas>#}
-{#			<canvas id="canvas_2" width="150" height="150"></canvas>#}
-{#			<div class="hide">高风险</div>#}
-{#		</div>#}
-{#		<div id="ranking">#}
-{#			<div></div>#}
-{#			<div>排名第<h2 style="display: inline-block;">2222</h2>名</div>#}
-{#		</div>#}
-{#		<div class="textbg"></div>#}
-{#		<h4>你打败了26%的人群，获得</h3>#}
-{#		<h2 class="color1 ls2 text-margin">健康达人</h2>#}
-{#		<h6 style="width: 260px; margin: 0 auto; color: #3ACFD6; line-height: 15px;">您是健康达人，还不错哦，已经达到平均水平了，再接再厉，对自己好点</h4>			#}
-{#		<p style="padding:45px 0 20px; color:#fff; text-align: center; font-size: 12px; color:#2EA2AB ;">> 关联基因数据获得定制化防癌方案，点击了解基因检测  <</p>#}
-{#		<ul class="Tab">#}
-{#			<li>关联基因报告</li>#}
-{#			<li class="bg2">购买基因数据</li>#}
-{#		</ul>#}
-{#		<!-- 登录注册 -->#}
-{#		<div class="onload">#}
-{#			 <p class="title-sub2">请输入手机号保存数据获取基因数据</p>#}
-{#			 <div class="form-wrapper">#}
-{#					<input class="input-size" type="text"  placeholder="请输入手机号" value=""><br>#}
-{#					<input class="input-size1" type="text" placeholder="请输入验证码" value=""><input class="input-size2" type="submit" value="验证码">#}
-{#			 </div>#}
-{#		</div>#}
-{#		<!-- 健康风险曲线 -->#}
-{#		<div id="app">#}
-{#			<div class="box-head-title ls2 fs18 fc2" style="text-align: center;line-height:80px;">健康风险曲线</div>#}
-{#			<p class="title-sub">调整生活方式,预知风险变化</p>#}
-{#			<img class="cancerImg" src="img/zxzx.png"/>#}
-{#			<div class="title-sub-content" @click="jieShi()">#}
-{#				<span class="title-sub1">"健康风险曲线"展示了你在不同年龄阶段患病指数的变化</span><span style="padding-left:5px"><img src="img/icon1.png" style="width:18px;vertical-align: middle;"></span>#}
-{#			</div>#}
-{#			<div class="progress-box">#}
-{#				<div class="progress-wrapper">#}
-{#					<div v-for="(categoryName,index) in categoryNames" class="progress-content">#}
-{#						<span class="title fc1">{{categoryName.name}}</span> #}
-{#						<span id="grade" class="fc1" :ref="'grade'+index">{{categoryName.num}}</span>#}
-{#						<div class="scale_panel">#}
-{#							<div class="scale" id="bar"  :ref="'bar'+index" @touchstart="move(index)">#}
-{#								<div id="bg" :ref="'bg'+index"></div>	#}
-{#								<span id="btn" class="circle_move" :ref="'btn'+index"></span>#}
-{#							</div>#}
-{#						</div>#}
-{#					</div>#}
-{#				</div>	#}
-{#			</div>#}
-{#			<ul class="Tab">#}
-{#				<li>改变健康曲线</li>#}
-{#				<li class="bg2">恢复默认曲线</li>#}
-{#			</ul>#}
-{#		</div>#}
-{#		<!--基因科学防癌  恶性肿瘤-->#}
-{#		<div id="cancer">#}
-{#			<div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">基因科学防癌</div>#}
-{#			<p class="ls2 fs12 color1" style="padding-top:70px;">有关基因的个性化防癌方案</p>#}
-{#			<!--<div id="cancerpicbox"></div>-->#}
-{#			<div class="cancerpicbox" @click = "selectp($event)" v-for="(Cdata,index) in candata" :class="{'new_downlist':index==0}">#}
-{#				<div class="color1 list_headover fs13" style="height: 100%;">#}
-{#					{{Cdata.name}}#}
-{#					<div class="square" :class="{'square_rotate':index==0}"></div>#}
-{#					<img class="cancerImg" src="img/zxzx.png"/>#}
-{#				</div>#}
-{#			</div>#}
-{#			#}
-{#		</div>#}
-{##}
-{#		<!--后方内容 专家建议-->#}
-{#		<div id="specialist">#}
-{#			<div class="box-head ls2 fs18" style="text-align: center;line-height:80px;">专家建议</div>#}
-{#			<div class="spenbox ">#}
-{#				<div class="manybox">#}
-{#					<p class="one_list"><img src="img/11-17.png" alt="" /><em class="ls2 fs14">壹博士怎么说？</em></p>#}
-{#					<div class="one_ment ls2 color2">恭喜你获得了"健康达人"，你的肺癌患病指数是55，排名第2222名，打败了26%的人群，风险正常。随着年龄增加，肺癌风险也会有一段上升区间，请密切关注健康风险曲线，参照专家建议，定期体检，小心预防哦~~</div>#}
-{#				</div>#}
-{#			<div class="manybox">#}
-{#				<p class="one_list"><img src="img/11-16.png" alt="" /><em class="ls2 fs14">重点建议</em></p>#}
-{#				<div class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">1.吸烟习惯减少<p class="one_ment_list color2 fs12">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p></div>#}
-{#				<div class="one_ment ls2 color1 fs13" style="margin-bottom:20px ;">1.吸烟习惯减少<p class="one_ment_list color2 fs12">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p><p class="one_ment_list color2">&bull; 建议戒烟或者减少到一天最多2根，并且避免二手烟。</p></div>					#}
-{#			</div>#}
-{#				<div class="manybox">#}
-{#					<p class="one_list fs14"><img src="img/11-15.png" alt="" /><em class="ls2">养生指南</em></p>#}
-{#					<div class="one_ment_downlist"v-for="(data,index) in data" @click = "selectp($event)" :class="{'new_downlist':index==0}">#}
-{#						<div class="color1 list_headover fs13" >{{data.name}}#}
-{#							<div class="square" :class="{'square_rotate':index==0}"></div>#}
-{#						</div>#}
-{#						<p class="padT5 color2 fs12">{{data.vtext}}</p>#}
-{#					</div>							#}
-{#				</div>				#}
-{#			</div>#}
-{#		</div>#}
-{#	</div>#}
-{#	<script>#}
-{#	// 判断是移动还是pc#}
-{#	function IsPC() {#}
-{#	    var userAgentInfo = navigator.userAgent,#}
-{#	        Agents = ["Android", "iPhone",#}
-{#	                "SymbianOS", "Windows Phone",#}
-{#	                "iPad", "iPod"],#}
-{#	        flag = true;#}
-{#	    for (var v = 0; v < Agents.length; v++) {#}
-{#	        if (userAgentInfo.indexOf(Agents[v]) > 0) {#}
-{#	        	#}
-{#	            flag = false;#}
-{#	            break;#}
-{#	        }#}
-{#	    }#}
-{#	    return flag;#}
-{#	  #}
-{#	}#}
-{#	//PC端和移动端方法倍数的判断#}
-{#	var scale = 1;#}
-{#	if( !IsPC() ){#}
-{#	   scale = 4;#}
-{#	}#}
-{#	//假数据#}
-{#	var data=[{#}
-{#		name:"润肺粥",#}
-{#		vtext:"川贝母20克、雪梨100克一块放入锅中，加清水，旺火煮沸，加入砂糖，改小火再",#}
-{#	},#}
-{#	{#}
-{#		name:"银耳茶",#}
-{#		vtext:"************************",#}
-{#	}]#}
-{#	// 肿瘤数据#}
-{#	var datatwo = [{#}
-{#		name:"吸烟影响指数"#}
-{#	},{#}
-{#		name:"BMl影响指数"#}
-{#	},{#}
-{#		name:"职业影响指数"#}
-{#	},{#}
-{#		name:"运动影响指数"#}
-{#	},{#}
-{#		name:"PM2.5影响指数"#}
-{#	},{#}
-{#		name:"非健康饮食影响指数"#}
-{#	},{#}
-{#		name:"健康饮食影响指数"#}
-{#	}]#}
-{#	var vm = new Vue({#}
-{#		el: '#content',#}
-{#		data:{#}
-{#			data:data,#}
-{#			candata:datatwo,#}
-{#			isA:false,#}
-{#			showNum: [],//存储每个项目的级别#}
-{#            step: [{ value: 0, beforeMove: 0, afterMove: 0, symbol:0},#}
-{#				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},#}
-{#				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},#}
-{#				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},#}
-{#				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},#}
-{#				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0},#}
-{#				   { value: 0, beforeMove: 0, afterMove: 0, symbol:0}#}
-{#				  ],        //初始化每个滚轮步长值#}
-{#		    categoryNames: [#}
-{#				{#}
-{#					name: "吸烟",#}
-{#					num: 0#}
-{##}
-{#				}, {#}
-{#					name: "BMI",#}
-{#					num: 0#}
-{#				},#}
-{#				{#}
-{#					name: "职业",#}
-{#					num: 0#}
-{#				},#}
-{#				{#}
-{#					name: "运动",#}
-{#					num: 0#}
-{#				},#}
-{#				{#}
-{#					name: "PM2.5",#}
-{#					num: 0#}
-{#				},#}
-{#				{#}
-{#					name: "非健康饮食",#}
-{#					num: 0#}
-{#				},#}
-{#				{#}
-{#					name: "健康饮食",#}
-{#					num: 0#}
-{#				}] #}
-{#		},#}
-{#		mouthod:{},#}
-{#		methods:{#}
-{#			selectp(event){#}
-{#				event.currentTarget.classList.toggle("new_downlist")#}
-{#//				event.target.children[0].addClass('square_rotate')#}
-{#				event.currentTarget.children[0].children[0].classList.toggle("square_rotate")#}
-{#			},#}
-{#			//风险曲线部分代码#}
-{#			move: function (index) {#}
-{#				var that = this;//变量替换#}
-{#				var btn = that.$refs['btn' + index][0];//获取滚轮;#}
-{#				var grade = that.$refs['grade' + index][0];//获取项目等级dom;#}
-{#				var bg = that.$refs['bg' + index][0];//获取进度条dom;#}
-{#				var bar = that.$refs['bar' + index][0];//获取进度条容器dom;#}
-{#				var btnWidth = btn.offsetWidth;//滚轮的宽度#}
-{#				var barWidth = bar.offsetWidth;//包裹进度条的盒子的宽度#}
-{#				var max = barWidth - btnWidth;//滑块滑动的最大距离#}
-{#				if (that.step[index].symbol == 0) {#}
-{#					that.step[index].beforeMove = event.changedTouches[0].pageX;#}
-{#					that.step[index].symbol = 1;//只在第一次加载时获取包裹进度条的盒子的坐标#}
-{#				}#}
-{#				bar.ontouchmove = function (event) {#}
-{#					that.step[index].afterMove = event.changedTouches[0].pageX;//获取滑动时的坐标#}
-{#					that.step[index].value = that.step[index].afterMove - that.step[index].beforeMove;//滑动前后坐标差#}
-{#					if (that.step[index].value <= btnWidth) {#}
-{#						that.step[index].value = 0;//坐标差小于滑块的宽度，不移动#}
-{#					}#}
-{#					else if (that.step[index].value >= max) {#}
-{#						that.step[index].value = max;#}
-{#					}#}
-{#					else {#}
-{#						//不做任何处理#}
-{#					}#}
-{#					btn.style.left = that.step[index].value + 'px';#}
-{#					bg.style.width = that.step[index].value + 'px';#}
-{#					that.showNum[index] = Math.round(((that.step[index].value) / barWidth) * 5);#}
-{#					that.categoryNames[index].num = that.showNum[index];#}
-{#				}#}
-{#				//手指移开,停止移动#}
-{#				bar.ontouchend = function (event) {#}
-{#					bar.ontouchmove = null;#}
-{#				}#}
-{##}
-{#			},#}
-{#            jieShi:function(){#}
-{#				layer.open({#}
-{#				type: 1,#}
-{#				title: false,#}
-{#				skin: 'layui-layer-rim', //加上边框#}
-{#				area: ['330px', '560px'], //宽高#}
-{#				content: '<div style="color:#25384c ;font-size:14px;text-align:left; letter-spacing:2px;margin:0 auto; padding:15px 10px 10px 15px;line-height:22px;border-bottom 1px solid #3fc5e5;"><div><b>风险模型包括8个生活习惯以及环境因素位点：</b></div><div><b>1.吸烟指数：</b>吸烟指数=每日吸烟根数*总吸烟年数，分为6档，0档为0，5档为401+，贡献率30% </div><div font-size:14px ><b>2.BMI指数：</b>分为6档，0档为<18.5，5档为40+，贡献率5% </div><div><b>3.职业影响：</b>分为6档，0档为工作环境无污染，5档为毒气工作环境，贡献率10%</div><div><b>4.运动：</b>分为6档，0档为每日运动0分钟，5档为160分钟+，贡献率5%</div><div><b>5.PM2.5指数：</b>分为6档，0档为PM2.5指数0，5档为2500+，贡献率10%</div><div><b>6.健康饮食：</b>分为6档，0档为从不摄取此类食物，5档为大量摄取，贡献率5%</div><div><b>7.非健康饮食：</b>分为6档，0档为从不摄取此类食物，5档为大量摄取，贡献率5%</div><div><b>8.遗传病史：</b>分为2档，0档为无家族遗传史，5档为有家族遗传史，贡献率15% 。此外，基因贡献率为15% 。</div><div><b></b>健康风险曲线模型目前仅涵盖20-80岁的风险变化，因为20岁以下风险较小，80岁以上风险也趋于稳定。参考文献：Cancer Statistics in China, 2015。</div></div>'#}
-{#				});	#}
-{#			}					#}
-{#		}#}
-{#	});#}
-{#		#}
-{#	function inte(percent) {#}
-{#		var canvas_1 = document.querySelector('#canvas_1');#}
-{#		var canvas_2 = document.querySelector('#canvas_2');#}
-{#		var ctx_1 = canvas_1.getContext('2d');#}
-{#		var ctx_2 = canvas_2.getContext('2d');#}
-{#		//画底部的灰色圆环#}
-{#		ctx_1.beginPath();#}
-{#		canvas_1.width = canvas_1.width*scale;#}
-{#		canvas_1.height = canvas_1.height*scale;#}
-{#		console.log(canvas_1.width)#}
-{#		console.log(canvas_1.height)#}
-{#		console.log(ctx_1.lineWidth)#}
-{#		ctx_1.lineWidth = 10*scale;#}
-{#		ctx_1.arc(canvas_1.width/ 2 , canvas_1.height / 2, canvas_1.width/ 2 - ctx_1.lineWidth / 2 , 0, Math.PI * 2, false);#}
-{#		ctx_1.strokeStyle = "#EEE";#}
-{#		ctx_1.closePath();#}
-{#		ctx_1.stroke();#}
-{#		if (percent < 0 || percent > 100) {#}
-{#			throw new Error('percent must be between 0 and 100');#}
-{#			return#}
-{#		}#}
-{#		#}
-{#		var angle = 0;#}
-{#		var timer;#}
-{#		canvas_2.width = canvas_2.width*scale;#}
-{#		canvas_2.height = canvas_2.height*scale;#}
-{#		(function draw() {#}
-{#			#}
-{#			timer = setTimeout(draw,10);#}
-{#//			console.log(timer)#}
-{#			// 在给顶的矩形内清除制定的像素#}
-{#			ctx_2.clearRect(0, 0, canvas_2.width, canvas_2.height)#}
-{#			//百分比圆环#}
-{#			ctx_2.beginPath();#}
-{#			#}
-{#			ctx_2.lineCap="round";#}
-{#			ctx_2.lineWidth = 10*scale;#}
-{#			ctx_2.arc(canvas_2.width/ 2, canvas_2.height/ 2, canvas_2.width/ 2 - ctx_2.lineWidth / 2, 0, angle * Math.PI / 180, false);#}
-{#			angle++;#}
-{#			var percentAge = parseInt((angle / 360) * 100)#}
-{#//			console.log(percentAge)#}
-{#			if (angle > (percent / 100 * 360)) {#}
-{#				percentAge = percent#}
-{#//				console.log(percentAge)#}
-{#				clearTimeout(timer);#}
-{#			};#}
-{#			ctx_2.strokeStyle = "#3FE2EB";#}
-{#			ctx_2.stroke();#}
-{#			ctx_2.closePath();#}
-{#			ctx_2.save();#}
-{#			ctx_2.beginPath();#}
-{#			ctx_2.rotate(90 * Math.PI / 180)#}
-{#			ctx_2.font = ' 180px Ruler';#}
-{#			ctx_2.fillStyle = '#3FE2EA';#}
-{#			var text = percentAge ;#}
-{#			#}
-{#			ctx_2.fillText(text, 220, -300);#}
-{#//			ctx_2.fillText(text, 0, 0);#}
-{#			ctx_2.closePath();#}
-{#			ctx_2.restore();#}
-{#		})()#}
-{#	}#}
-{#	var c = 85#}
-{#	window.onload = inte(c);#}
-{#	</script>#}
-{#</body>#}
-{#</html>#}
+    //老用户弹窗
+	var scrollTop;
+	function old_Information() {
+		layer.open({
+			type: 1,
+			title: '选择你要关联的报告',
+			content: $('#report'),
+			area: '350px',//width：350px
+			btn: '确定',
+			btnAlign: 'c',
+			scrollbar: false,
+			success: function () {
+				scrollTop = document.scrollingElement.scrollTop;
+				// lockBody();
+				unLockBody();
+			},
+			cancel: function () {
+				unLockBody();
+			},
+		});
+	}
+	</script>
+</body>
+</html>
